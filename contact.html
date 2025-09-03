@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Unica+One&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Space Mono', monospace;
+      background: #0e0e2c;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: -2;
+    }
+
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .navbar {
+      width: 100vw;
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .container1 {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      padding: 0 1.2rem;
+    }
+
+    .brand {
+      text-shadow: 0px 0px 3px white;
+      font-size: 2.2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      color: #ffde99;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links li {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #ddd;
+      padding: 0.4rem 0.7rem;
+      transition: 0.3s;
+    }
+
+    .nav-links li a.active,
+    .nav-links li a:hover {
+      color: #fff;
+      border-bottom: 2px solid #f9c74f;
+    }
+
+    .menubar {
+      font-size: 2rem;
+      color: #fff;
+      display: none;
+      cursor: pointer;
+    }
+
+    /* Dropdown shared */
+    .dropdown-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background-color: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      display: none;
+      flex-direction: column;
+      min-width: 180px;
+      z-index: 1002;
+      cursor: pointer;
+    }
+
+    .dropdown-menu.show {
+      display: flex;
+    }
+
+    .dropdown-menu li {
+      padding: 10px 15px;
+    }
+
+    .dropdown-menu li a {
+      color: white;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .dropdown-menu li a:hover {
+      color: white;
+    }
+
+    .user-icon {
+      font-size: 1.8rem;
+      color: #ffde99;
+      padding: 5px;
+    }
+    @media (max-width: 768px) {
+      .menubar { display: block; }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #222;
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        width: 180px;
+        border-radius: 8px;
+        padding: 10px 0;
+        z-index: 1001;
+      }
+      .nav-links.show { display: flex; }
+      .rocket { display: none; }
+      .moon { width: 80px; height: 80px; left: 70vw; }
+    }
+     @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    
+    .container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); 
+      gap: 30px;
+      width: 90%;
+      margin-top: 130px;
+      margin-bottom: 50px;
+    }
+
+    .container div {
+      background: rgba(255, 255, 255, 0.05); 
+      border-radius: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      min-height: 230px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+      gap: 10px;
+    }
+
+    .container div:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0px 8px 8px rgba(255, 222, 153, 0.6);
+    }
+
+   
+    .container div a {
+      color: #ffde99;
+      text-decoration: none;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      word-break: break-word;
+      transition: color 0.3s;
+    }
+
+    .container div a:hover {
+      color: #ffffff;
+    }
+
+    .container div h1 {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        grid-template-columns: repeat(2, 1fr); 
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        grid-template-columns: 1fr; 
+      }
+      .container div {
+        min-height: 210px;
+      }
+    }
+
+.footer {
+      background: #111920;
+      width: 100%;
+    }
+
+    .footer .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 40px 60px;
+      gap: 3rem;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .footer-col h4 {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .footer-col .links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-col .links li {
+      line-height: 2rem;
+    }
+
+ .footer-col .links li a {
+      text-decoration: none;
+      color: #bfbfbf;
+      font-size: 0.8rem;
+    }
+
+    .footer-col .links li a:hover {
+      color: #d4a2a2;
+    }
+
+    .footer-col p {
+      margin: 0 0 15px 0;
+      color: #bfbfbf;
+      max-width: 300px;
+      font-size: 0.8rem;
+    }
+
+    .footer-col form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
+
+    .footer-col input {
+      height: 45px;
+      border-radius: 6px;
+      background: none;
+      width: 250px;
+      outline: none;
+      border: 1px solid #7489C6;
+      color: #fff;
+      padding-left: 10px;
+      font-size: 1rem;
+    }
+
+.footer-col input::placeholder {
+      color: #ccc;
+    }
+
+    .footer-col form button {
+      background: #fff;
+      outline: none;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 250px;
+      font-size: 1rem;
+      transition: 0.2s ease;
+    }
+
+    .footer-col form button:hover {
+      background: #946666;
+      color: #fff;
+    }
+
+    .footer-col .icons {
+      display: flex;
+      margin-top: 20px;
+      gap: 20px;
+      cursor: pointer;
+    }
+
+    .footer-col .icons i {
+      color: #afb6c7;
+      font-size: 20px;
+    }
+ .footer-col .icons i:hover {
+      color: #9f6e6e;
+    }
+
+    .footer-bottom {
+      width: 100%;
+      background-color: #0e141a;
+      padding: 15px 0;
+      border-top: 1px solid #2a2a2a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #bbb;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 576px) {
+      .footer .footer-row {
+        flex-direction: column;
+        padding: 20px;
+        gap: 2rem;
+      }
+
+      .footer-col {
+        align-items: center;
+        text-align: center;
+        min-width: 100%;
+      }
+
+      .footer-col form {
+        align-items: center;
+      }
+
+.footer-col input,
+      .footer-col form button {
+        width: 90%;
+      }
+
+      .footer-col .icons {
+        justify-content: center;
+      }
+
+      .footer-bottom {
+        font-size: 0.9rem;
+        padding: 10px;
+      }
+    }
+ @media (min-width: 577px) and (max-width: 992px) {
+      .footer .footer-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+      }
+
+      .footer-col {
+        min-width: 45%;
+        margin-bottom: 30px;
+      }
+
+      .footer-col input,
+      .footer-col form button {
+        width: 100%;
+      }
+}
+
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+
+  <!-- <nav>
+    <div class="logo">FlashMaster 🌌</div>
+    <div class="links">
+      <a href="#">Home</a>
+      <a href="#">Modules</a>
+      <a href="#">Create</a>
+      <a href="#">To-do-List</a>
+      <button class="dark-btn" onclick="toggleDark()">🌓</button>
+    </div>
+  </nav> -->
+   <nav class="navbar">
+    <div class="container1">
+      <div class="brand"><strong>FlashMaster</strong></div>
+      <div class="menubar" onclick="toggleMenu()">☰</div>
+      <ul class="nav-links" id="navMenu">
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="modules.html">Modules</a></li>
+
+        <!-- CREATE DROPDOWN -->
+        <li class="create-dropdown" onclick="toggleCreate(event)">
+          <a href="javascript:void(0)">Create</a>
+          <ul class="dropdown-menu" id="createDropdown">
+            <li><a href="create.html">Add Topic</a></li>
+            <li><a href="addCard.html">Add Cards</a></li>
+          </ul>
+        </li>
+
+        <li><a href="progress.html">To-do List</a></li>
+
+        <!-- USER DROPDOWN -->
+        <li class="user-dropdown" onclick="toggleDropdown(event)">
+          <i class="fa-solid fa-circle-user user-icon"></i>
+          <ul class="dropdown-menu" id="dropdownMenu">
+            <li><a href="myTopics.html">My Topics</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="account.html">Add Account</a></li>
+            <li><a href="logout.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div>
+      <h1>Sd.Sana Farahat</h1>
+      <a href="mailto:sanafarhat005@gmail.com"><i class="fas fa-envelope"></i> sanafarhat005@gmail.com</a>
+      <a href="http://www.linkedin.com/in/sana-farhat-syed-80132a298" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      <a href="https://github.com/Sanafarhat" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+
+    <div>
+      <h1>M.Chandra Bhanu</h1>
+      <a href="mailto:mandigachandrabhanu@gmail.com"><i class="fas fa-envelope"></i> mandigachandrabhanu@gmail.com</a>
+      <a href="https://www.linkedin.com/in/chandra-bhanu-mandiga-7194322bb" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      <a href="https://github.com/chandrabhanu18" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+
+    <div>
+      <h1>Ch.Navya Varshini</h1>
+      <a href="mailto:navyavarshini5@gmail.com"><i class="fas fa-envelope"></i> navyavarshini5@gmail.com</a>
+      <a href="http://www.linkedin.com/in/navya-varshini-0b9b81298" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      <a href="https://github.com/Navyavarshini" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+
+    <div>
+      <h1>V.Sruthi</h1>
+      <a href="mailto:sruthivelpuri216@gmail.com"><i class="fas fa-envelope"></i> sruthivelpuri216@gmail.com</a>
+      <a href="https://www.linkedin.com/in/sruthi-velpuri-529ab42a3/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      <a href="https://github.com/sruthivelpuri" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+
+    <div>
+      <h1>I.Dedeepya</h1>
+      <a href="mailto:dedeepyaijjapureddi@gmail.com"><i class="fas fa-envelope"></i> dedeepyaijjapureddi@gmail.com</a>
+      <a href="https://www.linkedin.com/in/dedeepya-ijjapureddi-141106292" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      <a href="https://github.com/Dedeepyaijjapureddi" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+
+    <div>
+      <h1>Ch.Suguna</h1>
+      <a href="mailto:sugunachenamallu.29@gmail.com"><i class="fas fa-envelope"></i> sugunachenamallu.29@gmail.com</a>
+      <a href="https://www.linkedin.com/in/suguna-chenamallu-7205b0298/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+      <a href="https://github.com/Sugunachenamallu" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+  </div>
+
+  <section class="footer">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>About Us</h4>
+        <p>
+          <i class="fa-solid fa-arrow-right"></i> Welcome to our website! <br>
+          <i class="fa-solid fa-arrow-right"></i> This is a website where you can store your mind <br>
+          <i class="fa-solid fa-arrow-right"></i> Here You Can Revise your Answers, Topics etc <br>
+          <i class="fa-solid fa-arrow-right"></i> The Main Thing is You can customize your cards <br>
+          <i class="fa-solid fa-arrow-right"></i> Just enjoy Our website And Enjoy learning
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="links">
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Home</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Modules</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Create</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> To-do List</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Login</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Signup</a></li>
+        </ul>
+      </div>
+<div class="footer-col">
+        <h4>What we have</h4>
+        <ul class="links">
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Revise Answers</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Custom Topics</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Custom Cards</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Challenges</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Dark-Mode</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Stay Connected</h4>
+        <p>Just Stay Updated With Us To Learn More</p>
+        <form action="#">
+          <input type="text" placeholder="Your email" required>
+          <button type="submit">Join with us</button>
+        </form>
+        <div class="icons">
+          <i class="fa-brands fa-twitter"></i>
+          <i class="fa-brands fa-linkedin"></i>
+          <i class="fa-brands fa-github"></i>
+        </div>
+      </div>
+    </div>
+<div class="footer-bottom">
+      <p>Made With ❤️ By TEAM FLASHMASTER</p>
+    </div>
+</section>
+
+  <script>
+    
+    const stars = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = `${Math.random() * 100}vh`;
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      stars.appendChild(star);
+    }
+
+    
+     function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      navMenu.classList.toggle('show');
+    }
+
+    function toggleDropdown(event) {
+      event.stopPropagation();
+      document.getElementById("dropdownMenu").classList.toggle("show");
+    }
+
+    function toggleCreate(event) {
+      event.stopPropagation();
+      document.getElementById("createDropdown").classList.toggle("show");
+    }
+
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".user-dropdown")) {
+        document.getElementById("dropdownMenu").classList.remove("show");
+      }
+      if (!e.target.closest(".create-dropdown")) {
+        document.getElementById("createDropdown").classList.remove("show");
+      }
+    });
+  </script>
+</body>
+</html>

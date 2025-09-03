@@ -1,0 +1,243 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const topicNameInput = document.getElementById("topicName");
+    const numCardsInput = document.getElementById("numCards");
+    const frontColorInput = document.getElementById("frontColor");
+    const backColorInput = document.getElementById("backColor");
+    const generateCardsBtn = document.getElementById("generateCardsBtn");
+    const flashcardEditorContainer = document.getElementById("flashcardEditorContainer");
+    const saveFlashcardsBtn = document.getElementById("saveFlashcardsBtn");
+    const messageBox = document.getElementById("messageBox");
+
+    let currentTopicId = null; // Holds the ID of the topic being edited
+
+    function showMessage(message, type = 'success') {
+        messageBox.textContent = message;
+        messageBox.className = 'message-box';
+        messageBox.classList.add(type);
+        messageBox.style.display = 'block';
+        setTimeout(() => {
+            messageBox.style.display = 'none';
+        }, 3000);
+    }
+
+    function darkenColor(hex, percent) {
+        let f = parseInt(hex.slice(1), 16),
+            t = percent < 0 ? 0 : 255,
+            p = percent < 0 ? percent * -1 : percent,
+            R = f >> 16,
+            G = (f >> 8) & 0x00ff,
+            B = f & 0x0000ff;
+        return "#" + (
+            0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 +
+            (Math.round((t - G) * p) + G) * 0x100 +
+            (Math.round((t - B) * p) + B)
+        ).toString(16).slice(1);
+    }
+
+    function renderFlashcards(cardsData, topicColors) {
+        flashcardEditorContainer.innerHTML = '';
+
+        if (cardsData.length > 0) {
+            saveFlashcardsBtn.style.display = 'block';
+        } else {
+            saveFlashcardsBtn.style.display = 'none';
+        }
+
+        cardsData.forEach((card, i) => {
+            const cardDiv = document.createElement("div");
+            cardDiv.classList.add("flashcard-editor");
+
+            cardDiv.style.setProperty('--front-card-color', topicColors.frontColor);
+            cardDiv.style.setProperty('--back-card-color', topicColors.backColor);
+            cardDiv.style.setProperty('--front-card-color-darker', darkenColor(topicColors.frontColor, -0.2));
+            cardDiv.style.setProperty('--back-card-color-darker', darkenColor(topicColors.backColor, -0.2));
+
+            cardDiv.innerHTML = `
+                <div class="flashcard-editor-inner">
+                    <div class="front-editor">
+                        <label for="question-${i}">Question ${i + 1}:</label>
+                        <textarea id="question-${i}" placeholder="Enter question...">${card.question || ''}</textarea>
+                        <button type="button" class="flip-card-button">Flip</button>
+                    </div>
+                    <div class="back-editor">
+                        <label for="answer-${i}">Answer ${i + 1}:</label>
+                        <textarea id="answer-${i}" placeholder="Enter answer...">${card.answer || ''}</textarea>
+                        <button type="button" class="flip-card-button">Flip</button>
+                    </div>
+                </div>
+            `;
+            flashcardEditorContainer.appendChild(cardDiv);
+
+            const flipButtons = cardDiv.querySelectorAll(".flip-card-button");
+            flipButtons.forEach(button => {
+                button.addEventListener("click", (event) => {
+                    event.stopPropagation();
+                    cardDiv.querySelector(".flashcard-editor-inner").classList.toggle("flipped");
+                });
+            });
+        });
+    }
+
+    generateCardsBtn.addEventListener("click", () => {
+        const topicName = topicNameInput.value.trim();
+        const numCards = parseInt(numCardsInput.value, 10);
+        const frontColor = frontColorInput.value;
+        const backColor = backColorInput.value;
+
+        if (!topicName) {
+            showMessage("Please enter a Topic Name.", "error");
+            return;
+        }
+        if (isNaN(numCards) || numCards <= 0) {
+            showMessage("Please enter a valid number of cards (at least 1).", "error");
+            return;
+        }
+
+        // When generating new cards, always reset to a new topic state
+        currentTopicId = null; // This is the key change!
+        
+        const newCards = Array.from({ length: numCards }, () => ({ question: '', answer: '' }));
+        renderFlashcards(newCards, { frontColor, backColor });
+        showMessage(`Generated ${numCards} flashcards for "${topicName}".`);
+    });
+
+    // --- Modified loadFlashcardsFromStorage ---
+    const loadFlashcardsFromStorage = () => {
+        try {
+            const urlParams = new URLSearchParams(window.location.search);
+            const topicIdParam = urlParams.get('topicId'); // Get topicId from URL
+
+            let allTopics = JSON.parse(localStorage.getItem('flashmaster_custom_topics')) || [];
+            let topicToLoad = null;
+
+            if (topicIdParam) {
+                // If topicId is in URL, try to load that specific topic
+                topicToLoad = allTopics.find(t => t.id === parseInt(topicIdParam));
+                if (topicToLoad) {
+                    currentTopicId = topicToLoad.id; // Set currentTopicId for editing
+                    topicNameInput.value = topicToLoad.topicName;
+                    numCardsInput.value = topicToLoad.cards.length;
+                    frontColorInput.value = topicToLoad.frontColor;
+                    backColorInput.value = topicToLoad.backColor;
+                    renderFlashcards(topicToLoad.cards, { frontColor: topicToLoad.frontColor, backColor: topicToLoad.backColor });
+                    showMessage(`Loaded flashcards for topic "${topicToLoad.topicName}".`);
+                    return; // Exit after loading specific topic
+                }
+            }
+            
+            // If no specific topic loaded from URL or if topic not found,
+            // provide a clean slate for creating a new topic.
+            // Reset fields and hide save button.
+            currentTopicId = null;
+            topicNameInput.value = '';
+            numCardsInput.value = 5; // Default number of cards
+            frontColorInput.value = '#1f006b'; // Default colors
+            backColorInput.value = '#3b00a0';
+            flashcardEditorContainer.innerHTML = ''; // Clear flashcards
+            saveFlashcardsBtn.style.display = 'none';
+            showMessage("Ready to create a new topic!", "info");
+            
+        } catch (e) {
+            console.error("Error loading from local storage:", e);
+            showMessage("Failed to load flashcards. Data might be corrupted.", "error");
+        }
+    };
+
+    loadFlashcardsFromStorage(); // Call on initial load
+
+    saveFlashcardsBtn.addEventListener("click", () => {
+        const topicName = topicNameInput.value.trim();
+        if (!topicName) {
+            showMessage("Topic Name cannot be empty when saving!", "error");
+            return;
+        }
+
+        const flashcards = [];
+        const cardElements = flashcardEditorContainer.querySelectorAll(".flashcard-editor");
+
+        if (cardElements.length === 0) {
+            showMessage("No flashcards to save. Generate cards first!", "error");
+            return;
+        }
+
+        cardElements.forEach((cardElement, index) => {
+            const questionTextarea = cardElement.querySelector(`#question-${index}`);
+            const answerTextarea = cardElement.querySelector(`#answer-${index}`);
+
+            const question = questionTextarea ? questionTextarea.value.trim() : '';
+            const answer = answerTextarea ? answerTextarea.value.trim() : '';
+
+            if (question || answer) {
+                flashcards.push({ question, answer });
+            }
+        });
+
+        if (flashcards.length === 0) {
+            showMessage("No content to save. Please fill in some questions/answers.", "error");
+            return;
+        }
+
+        let allTopics = JSON.parse(localStorage.getItem('flashmaster_custom_topics')) || [];
+        
+        let topicData = {
+            id: currentTopicId || Date.now(),
+            topicName: topicName,
+            cards: flashcards,
+            frontColor: frontColorInput.value,
+            backColor: backColorInput.value,
+            lastModified: new Date().toISOString()
+        };
+
+        if (currentTopicId) {
+            const existingTopicIndex = allTopics.findIndex(t => t.id === currentTopicId);
+            if (existingTopicIndex > -1) {
+                allTopics[existingTopicIndex] = topicData;
+                showMessage(`Topic "${topicName}" updated successfully!`);
+            } else {
+                allTopics.push(topicData); // Should ideally not happen if currentTopicId is correct
+                showMessage(`Topic "${topicName}" saved as new (ID mismatch)!`);
+            }
+        } else {
+            // New topic, but check for name duplicates
+            const existingTopicByName = allTopics.find(t => t.topicName.toLowerCase() === topicName.toLowerCase());
+            if (existingTopicByName) {
+                showMessage(`A topic named "${topicName}" already exists. Please choose a different name or edit the existing topic from "My Topics".`, "error");
+                return; // Stop saving if name is duplicate for a new topic
+            }
+            allTopics.push(topicData);
+            currentTopicId = topicData.id; // Set the ID for the newly saved topic
+            showMessage(`Topic "${topicName}" saved successfully!`);
+        }
+        
+        localStorage.setItem('flashmaster_custom_topics', JSON.stringify(allTopics));
+    });
+
+    function toggleMenu() {
+        const nav = document.getElementById("navMenu");
+        nav.classList.toggle("show");
+    }
+
+    window.toggleMenu = toggleMenu;
+});
+
+// Function to toggle the user dropdown menu
+function toggleDropdown(event) {
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  dropdownMenu.classList.toggle('show');
+  event.stopPropagation(); // Prevents the body click listener from immediately closing it
+}
+
+// Function to toggle the create dropdown menu
+function toggleCreate(event) {
+  const createDropdown = document.getElementById('createDropdown');
+  createDropdown.classList.toggle('show');
+  event.stopPropagation(); // Prevents the body click listener from immediately closing it
+}
+
+// Function to close all dropdowns when clicking outside
+document.body.addEventListener('click', () => {
+  const dropdownMenus = document.querySelectorAll('.dropdown-menu');
+  dropdownMenus.forEach(menu => {
+    menu.classList.remove('show');
+  });
+});

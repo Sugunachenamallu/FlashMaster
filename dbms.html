@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlashMaster</title>
+  <link rel="stylesheet" href="dbms.css" />
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="main-content">
+        <nav class="navbar">
+            <div class="container1">
+                <div class="brand">FlashMaster</div>
+                <div class="menubar" tabindex="0" aria-label="Menu" onclick="toggleMenu()"
+                    onkeypress="if(event.key==='Enter'){toggleMenu();}">☰</div>
+                <ul class="nav-links" id="navMenu">
+                    <li><a href="HomePage.html">Home</a></li>
+                    <li><a href="modules.html">Modules</a></li>
+                    <li><a href="create.html">Create</a></li>
+                    <li><a href="progress.html">To-do list</a></li>
+                </ul>
+            </div>
+        </nav>
+        <img src="thub.png" alt="Rocket" class="rocket" />
+    <div class="mode-toggle" id="modeToggleContainer">
+        <label class="toggle-label">
+          <input type="checkbox" id="quizModeToggle" />
+          <span class="custom-toggle"></span> 
+          <span class="toggle-text">Enable Test Mode</span>
+        </label>
+        <p class="note">
+        🔒 <strong>Note:</strong> In Test Mode, the flashcard will not flip until you write the correct
+        answer.
+        </p>
+   </div> 
+        <div class="timer-container">
+            <div class="card-counter" id="cardCounter">1 / 40</div>
+            <div class="timer-display" id="timerDisplay">00:00</div>
+        </div>
+        <div class="container">
+            <button class="prev" onclick="showPrev()">← Previous</button>
+            <div class="flashcard-container" id="flashcardContainer">
+                </div>
+            <button class="next" onclick="showNext()">Next →</button>
+        </div>
+        <div class="answer-box" id="answerBox">
+            <input type="text" id="typedAnswer" placeholder="Type your answer here..." name="text" class="input" />
+            <button onclick="checkTypedAnswer()"><span class="text">Submit</span></button>
+            <button id="checkAnswerButton" class="submit" style="display: none;" onclick="revealAnswer()"><span
+                    class="text">Check Answer</span></button>
+        </div>
+    </div>
+    <img src="astronaut.png" alt="Floating Astronaut" class="astronaut" />
+    <script src="dbms.js"></script>
+    <script>
+        // Starfield
+        const stars = document.getElementById("stars");
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement("div");
+            star.classList.add("star");
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            stars.appendChild(star);
+        }
+        // Hamburger menu
+        function toggleMenu() {
+            document.getElementById("navMenu").classList.toggle("show");
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Unica+One&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+      html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: 'Space Mono', monospace;
+      background: #0e0e2c;
+    
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #e0e0e0;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: -2;
+    }
+
+    .stars {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      width: 2px; height: 2px;
+      border-radius: 50%;
+      animation: twinkle 3s infinite ease-in-out;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+      .navbar {
+      width: 100vw;
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      padding: 15px 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .container1 {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      padding: 0 1.2rem;
+    }
+
+    .brand {
+      text-shadow: 0px 0px 3px white;
+      font-size: 2.2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      color: #ffde99;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-links li {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #ddd;
+      padding: 0.4rem 0.7rem;
+      transition: 0.3s;
+    }
+
+    .nav-links li a.active,
+    .nav-links li a:hover {
+      color: #fff;
+      border-bottom: 2px solid #f9c74f;
+    }
+
+    .menubar {
+      font-size: 2rem;
+      color: #fff;
+      display: none;
+      cursor: pointer;
+    }
+
+    /* Dropdown shared */
+    .dropdown-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background-color: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      display: none;
+      flex-direction: column;
+      min-width: 180px;
+      z-index: 1002;
+      cursor: pointer;
+    }
+
+    .dropdown-menu.show {
+      display: flex;
+    }
+
+    .dropdown-menu li {
+      padding: 10px 15px;
+    }
+
+    .dropdown-menu li a {
+      color: white;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+
+    .dropdown-menu li a:hover {
+      color: white;
+    }
+
+    .user-icon {
+      font-size: 1.8rem;
+      color: #ffde99;
+      padding: 5px;
+    }
+    @media (max-width: 768px) {
+      .menubar { display: block; }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #222;
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        width: 180px;
+        border-radius: 8px;
+        padding: 10px 0;
+        z-index: 1001;
+      }
+      .nav-links.show { display: flex; }
+      .rocket { display: none; }
+      .moon { width: 80px; height: 80px; left: 70vw; }
+    }
+      @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      min-height: calc(100vh - 70px);
+      width: 95%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 10px;
+      
+    }
+    .top-section, .bottom-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: 10px 0;
+}
+      .astropencil, .astrobook {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+}
+
+
+    .astropencil img, .astrobook img {
+      width: clamp(200px, 40%, 400px); 
+      max-width: 100%;
+      height: auto; 
+      animation: floaty 4s ease-in-out infinite,
+                   sway 6s ease-in-out infinite alternate;
+    }
+
+    @media (min-width: 768px) {
+  .main-container {
+    flex-direction: row; 
+  }
+
+  .top-section,
+  .bottom-section {
+    width: 50%;
+    margin: 0;
+  }
+}
+
+    @keyframes floaty {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes sway {
+      0% { transform: rotate(0); }
+      50% { transform: rotate(3deg); }
+      100% { transform: rotate(0); }
+    }
+
+    .todo-section {
+      text-align: center;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .todo-section h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: #ffde99;
+    }
+
+    .todo-column {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      width: 100%;
+    }
+
+
+    .todo-card {
+      background: rgba(255,255,255,0.08);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: left;
+      backdrop-filter: blur(5px);
+    }
+
+    .todo-card h3 {
+      background: rgba(0,0,0,0.4);
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      color: #ffdfbf;
+    }
+
+    .task-list { list-style: none; margin: 0; padding: 0; }
+
+    .task-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.05);
+      margin-bottom: 6px;
+      padding: 6px 8px;
+      border-radius: 8px;
+    }
+
+    .task-left { display: flex; align-items: center; gap: 8px; }
+
+    .task-list input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: #ff5e5e;
+      cursor: pointer;
+    }
+
+    /* Add task section */
+    .add-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .add-section input,
+    .add-section button {
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+
+    .add-section input[type="text"] {
+      width:800px;
+           padding:12px; 
+           flex: 2; }
+    .add-section input[type="date"],
+    .add-section input[type="time"] { 
+      width:800px;
+           padding:20px;flex: 1; }
+
+    .add-section button {
+      background: #bca4fa;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+    <nav class="navbar">
+    <div class="container1">
+      <div class="brand"><strong>FlashMaster</strong></div>
+      <div class="menubar" onclick="toggleMenu()">☰</div>
+      <ul class="nav-links" id="navMenu">
+        <li><a  href="HomePage.html">Home</a></li>
+        <li><a href="modules.html">Modules</a></li>
+
+        <li class="create-dropdown" onclick="toggleCreate(event)">
+          <a href="javascript:void(0)">Create</a>
+          <ul class="dropdown-menu" id="createDropdown">
+            <li><a href="create.html">Add Topic</a></li>
+            <li><a href="addCard.html">Add Cards</a></li>
+          </ul>
+        </li>
+
+        <li><a class="active" href="progress.html">To-do List</a></li>
+
+        <li class="user-dropdown" onclick="toggleDropdown(event)">
+          <i class="fa-solid fa-circle-user user-icon"></i>
+          <ul class="dropdown-menu" id="dropdownMenu">
+            <li><a href="myTopics.html">My Topics</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="signup.html">Add Account</a></li>
+            <li><a href="logout.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <div class="main-container">
+    <div class="top-section">
+      <div class="astropencil">
+        <img src="astronautpencil.png" alt="Astronaut Pencil">
+      </div>
+    </div>
+
+    <div class="todo-section">
+      <h2>🚀 DAILY TO DO LIST</h2>
+
+      
+      <div class="add-section">
+        <input type="text" id="task-input" placeholder="Enter your task">
+        <input type="date" id="date-input">
+        <input type="time" id="time-input">
+        <button onclick="addTask()">+</button>
+      </div>
+      <div class="todo-column" id="todo-column"></div>
+    </div>
+
+    <div class="bottom-section">
+      <div class="astrobook">
+        <img src="astronautbook.png" alt="Astronaut Book">
+      </div>
+    </div>
+  </div>
+
+  
+  <script>
+    const stars = document.getElementById("stars");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.classList.add("star");
+      star.style.top = `${Math.random() * 100}vh`;
+      star.style.left = `${Math.random() * 100}vw`;
+      star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      stars.appendChild(star);
+    }
+    function toggleMenu() {
+      const navMenu = document.getElementById('navMenu');
+      navMenu.classList.toggle('show');
+    }
+
+    function toggleDropdown(event) {
+      event.stopPropagation();
+      document.getElementById("dropdownMenu").classList.toggle("show");
+    }
+
+    function toggleCreate(event) {
+      event.stopPropagation();
+      document.getElementById("createDropdown").classList.toggle("show");
+    }
+
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".user-dropdown")) {
+        document.getElementById("dropdownMenu").classList.remove("show");
+      }
+      if (!e.target.closest(".create-dropdown")) {
+        document.getElementById("createDropdown").classList.remove("show");
+      }
+    });
+
+    // --- Local Storage Implementation ---
+
+    // Function to save tasks to local storage
+    function saveTasks(tasks) {
+      localStorage.setItem('todoTasks', JSON.stringify(tasks));
+    }
+
+    // Function to load tasks from local storage
+    function loadTasks() {
+      const storedTasks = localStorage.getItem('todoTasks');
+      return storedTasks ? JSON.parse(storedTasks) : [];
+    }
+
+    // Function to render tasks on the page
+    function renderTasks() {
+      const tasks = loadTasks();
+      const column = document.getElementById("todo-column");
+      column.innerHTML = ''; // Clear existing tasks before rendering
+
+      // Group tasks by date
+      const tasksByDate = tasks.reduce((acc, task) => {
+        if (!acc[task.date]) {
+          acc[task.date] = [];
+        }
+        acc[task.date].push(task);
+        return acc;
+      }, {});
+
+      // Sort dates
+      const sortedDates = Object.keys(tasksByDate).sort();
+
+      sortedDates.forEach(date => {
+        let card = document.getElementById("card-" + date);
+
+        if (!card) {
+          card = document.createElement("div");
+          card.className = "todo-card";
+          card.id = "card-" + date;
+
+          const title = document.createElement("h3");
+          title.textContent = `📅 ${date}`;
+          card.appendChild(title);
+
+          const list = document.createElement("ul");
+          list.className = "task-list";
+          list.id = "list-" + date;
+          card.appendChild(list);
+
+          column.appendChild(card);
+        }
+
+        const list = document.getElementById("list-" + date);
+        tasksByDate[date].forEach(task => {
+          createTaskElement(list, task);
+        });
+      });
+    }
+
+    // Function to create a single task list item element
+    function createTaskElement(listElement, task) {
+      const li = document.createElement("li");
+
+      const leftDiv = document.createElement("div");
+      leftDiv.className = "task-left";
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = task.completed;
+
+      const label = document.createElement("label");
+      label.textContent = `${task.text} ${task.time ? "(" + task.time + ")" : ""}`;
+      label.style.textDecoration = task.completed ? "line-through" : "none";
+
+      checkbox.onchange = () => {
+        label.style.textDecoration = checkbox.checked ? "line-through" : "none";
+        // Update task completion status in local storage
+        let tasks = loadTasks();
+        const taskIndex = tasks.findIndex(t => t.id === task.id);
+        if (taskIndex !== -1) {
+          tasks[taskIndex].completed = checkbox.checked;
+          saveTasks(tasks);
+        }
+      };
+
+      leftDiv.appendChild(checkbox);
+      leftDiv.appendChild(label);
+
+      const btn = document.createElement("button");
+      btn.className = "remove-btn";
+      btn.innerHTML = "🗑";
+      btn.onclick = () => {
+        li.remove();
+        // Remove task from local storage
+        let tasks = loadTasks();
+        tasks = tasks.filter(t => t.id !== task.id);
+        saveTasks(tasks);
+        // If a card becomes empty, remove it
+        if (listElement.children.length === 0) {
+            listElement.closest('.todo-card').remove();
+        }
+      };
+
+      li.appendChild(leftDiv);
+      li.appendChild(btn);
+      listElement.appendChild(li);
+    }
+
+
+    function addTask() {
+      const taskInput = document.getElementById("task-input");
+      const dateInput = document.getElementById("date-input");
+      const timeInput = document.getElementById("time-input");
+
+      const taskText = taskInput.value.trim();
+      const taskDate = dateInput.value;
+      const taskTime = timeInput.value;
+
+      if (taskText === "" || taskDate === "") {
+        alert("Please enter a task and a date."); // Provide user feedback
+        return;
+      }
+
+      const newTask = {
+        id: Date.now(), // Unique ID for each task
+        text: taskText,
+        date: taskDate,
+        time: taskTime,
+        completed: false
+      };
+
+      let tasks = loadTasks();
+      tasks.push(newTask);
+      saveTasks(tasks);
+
+      renderTasks(); // Re-render all tasks to include the new one
+
+      // Clear input fields
+      taskInput.value = "";
+      dateInput.value = "";
+      timeInput.value = "";
+    }
+
+    // Initial render when the page loads
+    document.addEventListener("DOMContentLoaded", renderTasks);
+  </script>
+</body>
+</html>

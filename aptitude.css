@@ -1,0 +1,577 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: 'Space Mono', monospace;
+  background-color: #0e0e2c;
+  color: #e0e0e0;
+  position: relative;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  height: 100vh; width: 100vw;
+  background: radial-gradient(ellipse at center, rgba(14,14,44,0.8) 0%, rgba(0,0,0,0.95) 100%), url('https://i.imgur.com/zVb6yNj.jpg');
+  background-size: cover;
+  z-index: -3;
+}
+
+/* Stars Background */
+.stars {
+  position: fixed;
+  z-index: -2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Navbar */
+.navbar {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.container1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5rem;
+}
+
+.brand {
+  text-shadow: 0 0 3px white;
+  font-size: 2rem;
+  color: #ffde99;
+}
+
+.menubar {
+  display: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1.2rem;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #ddd;
+  padding: 0.5rem;
+  transition: 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+  color: white;
+  border-bottom: 2px solid #f9c74f;
+}
+
+/* .dark-btn {
+  padding: 8px 14px;
+  border: 2px solid #ffde99;
+  background: transparent;
+  border-radius: 6px;
+  color: #ffde99;
+  cursor: pointer;
+}
+
+.dark-btn:hover {
+  background: #ffde99;
+  color: #000;
+} */
+
+/* Flashcard Area */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.flashcard-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.flashcard {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  background-color: #1a192d;
+  color: white;
+  border-radius: 18px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+  display: none;
+}
+
+.flashcard.active {
+  display: block;
+}
+
+.flashcard:hover {
+  transform: rotateY(180deg);
+  cursor: pointer;
+}
+
+body.quiz-mode .flashcard:hover {
+  transform: none;
+}
+
+.flashcard.flip {
+  transform: rotateY(180deg);
+}
+
+.front, .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 18px;
+  border: 5px double #fff;
+  padding: 1rem;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden;
+  word-wrap: break-word;
+}
+
+.front {
+  background: #1f006b;
+  color: #b8e3ff;
+}
+
+.back {
+  background: #1f006b;
+  color: #ffde99;
+  transform: rotateY(180deg);
+}
+
+/* Buttons */
+.prev,
+.next,
+.answer-box button {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(to bottom, #1b1c3f, #4a4e91);
+ /* Gradient background */
+  color: white;
+ /* White text color */
+  font-family: "Segoe UI", sans-serif;
+ /* Stylish and legible font */
+  font-weight: bold;
+  font-size: 18px;
+ /* Large font size */
+  border: none;
+ /* No border */
+  border-radius: 30px;
+ /* Rounded corners */
+  padding: 14px 28px;
+ /* Large padding */
+  cursor: pointer;
+ /* Cursor on hover */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+ /* Subtle shadow */
+  animation: button-shimmer 2s infinite;
+  transition: all 0.3s ease-in-out;
+ /* Smooth transition */
+}
+
+/* Hover animation */
+.prev:hover {
+  background: linear-gradient(to bottom, #2c2f63, #5b67b7);
+  animation: button-particles 1s ease-in-out infinite;
+  transform: translateY(-2px);
+}
+.next:hover {
+  background: linear-gradient(to bottom, #2c2f63, #5b67b7);
+  animation: button-particles 1s ease-in-out infinite;
+  transform: translateY(-2px);
+}
+
+/* Click animation */
+.prev:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+.next:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Shimmer animation */
+@keyframes button-shimmer {
+  0% {
+    background-position: left top;
+  }
+
+  100% {
+    background-position: right bottom;
+  }
+}
+
+/* Particle animation */
+@keyframes button-particles {
+  0% {
+    background-position: left top;
+  }
+
+  100% {
+    background-position: right bottom;
+  }
+}
+
+
+/* Answer Box */
+.answer-box {
+  display: none;
+  margin: 1rem auto 0 auto;
+  width: 100%;
+  max-width: 400px;
+  padding: 0 1rem;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.quiz-mode .answer-box {
+  display: flex;
+}
+
+.answer-box input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  border: none;
+}
+.input {
+  border-radius: 10px;
+  outline: 2px solid #FEBF00;
+  border: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: #e2e2e2;
+  outline-offset: 3px;
+  padding: 10px 1rem;
+  transition: 0.25s;
+}
+
+.input:focus {
+  outline-offset: 5px;
+  background-color: #fff
+}
+
+/* Mode Toggle */
+/* From Uiverse.io by WhiteNervosa */ 
+
+.mode-toggle {
+    width: 100%; /* Make it take full width to allow auto margins to work */
+    max-width: 400px; /* Keep your existing max-width */
+    margin: 1rem auto; /* This centers the block horizontally */
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffde99;
+    /* Add flexbox to center its internal content horizontally */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center items horizontally within the flex container */
+    justify-content: center; /* Center items vertically if there's extra space */
+    text-align: center; /* Center text within .mode-toggle */
+}
+
+/* Update .toggle-label to use flexbox for proper alignment */
+.toggle-label {
+    display: flex; /* Use flexbox to arrange items in a row */
+    align-items: center; /* Vertically center the custom-toggle and the text */
+    gap: 10px; /* Space between the custom-toggle and the text */
+    cursor: pointer; /* Keep cursor pointer on the whole label */
+    /* Remove any width/height from here if they conflict with flexbox */
+}
+
+/* Your existing custom-toggle styles remain mostly the same, but ensure no text content */
+.custom-toggle {
+    background-color: #ffffff2b;
+    border-radius: 100px;
+    padding: 1px;
+    margin: 0; /* Adjust margin if needed, margin-left/right: auto is often better if you want to center it within the label */
+    /* cursor: pointer; removed from here, as it's on .toggle-label */
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0s;
+    align-items: center;
+    position: relative;
+    display: block;
+    width: 51px;
+    height: 29px;
+    box-shadow: rgba(0, 0, 0, 0.62) 0px 0px 5px inset, rgba(0, 0, 0, 0.21) 0px 0px 0px 24px inset,
+        #22cc3f 0px 0px 0px 0px inset, rgba(224, 224, 224, 0.45) 0px 1px 0px 0px;
+}
+
+/* New style for the toggle text */
+.toggle-text {
+    font-size: 1.1rem; /* Adjust font size as needed */
+    color: #ffde99; /* Example color, match your design */
+    white-space: nowrap; /* Prevent text from wrapping if there's enough space */
+}
+
+/* The rest of your toggle styles (::after, :checked states) remain the same */
+.custom-toggle::after {
+    content: "";
+    display: flex;
+    top: 2.3px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    background-color: #e3e3e3;
+    border-radius: 200px;
+    position: absolute;
+    box-shadow: transparent 0px 0px 0px 2px, rgba(0, 0, 0, 0.3) 0px 6px 6px;
+    transition: left 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s, background-color 300ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
+    will-change: left, background-color;
+}
+
+.toggle-label input[type="checkbox"]:checked + .custom-toggle {
+    box-shadow: rgba(0, 0, 0, 0.62) 0px 0px 5px inset, #22cc3f 0px 0px 0px 2px inset, #22cc3f 0px 0px 0px 24px inset,
+        rgba(224, 224, 224, 0.45) 0px 1px 0px 0px;
+}
+
+.toggle-label input[type="checkbox"]:checked + .custom-toggle::after {
+    left: 24px;
+}
+
+.toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+/* Note style - no change needed */
+.note {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #ccc;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    /* Ensure similar centering for smaller screens if needed */
+    .mode-toggle {
+        padding: 0.5rem; /* Adjust padding for smaller screens */
+    }
+}
+
+/* Counter */
+.card-counter {
+  text-align: center;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+
+.timer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Space between counter and timer */
+    margin: 1rem auto; /* Consistent with your .card-counter margin */
+    width: 100%;
+    max-width: 400px;
+}
+
+.timer-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f9c74f; /* Yellowish color, similar to your brand and border-bottom */
+    background: rgba(255, 255, 255, 0.05); /* Subtle background */
+    padding: 8px 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 10px rgba(249, 199, 79, 0.3); /* Subtle glow */
+    text-shadow: 0 0 5px rgba(249, 199, 79, 0.7);
+    display: none; /* Hidden by default, only show in quiz mode */
+}
+
+/* Ensure the timer is shown only in quiz mode */
+body.quiz-mode .timer-display {
+    display: block;
+}
+
+/* Adjust card-counter slightly if needed */
+.card-counter {
+    text-align: center;
+    /* margin: 1rem 0;  Removed as it's now in timer-container */
+    font-weight: bold;
+    font-size: 1.2rem; /* Slightly adjust size for better balance */
+}
+
+
+/* Responsive adjustments for timer-container */
+@media (max-width: 480px) {
+    .timer-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .timer-display {
+        font-size: 1.2rem;
+    }
+}
+
+/* Floating Images */
+.rocket,
+.astronaut {
+  position: fixed;
+  width: 240px;
+  height: auto;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.rocket {
+  top: 40px;
+  right: 30px;
+  animation: floatRocket 4s infinite ease-in-out;
+}
+
+.astronaut {
+  bottom: 20px;
+  left: 20px;
+  animation: float 4s infinite ease-in-out;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes floatRocket {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* ------------------ Responsive ------------------ */
+@media (max-width: 768px) {
+  .container1 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 15px;
+    background: #222;
+    padding: 1rem;
+    border-radius: 8px;
+    z-index: 999;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .nav-links li {
+    margin: 0.5rem 0;
+  }
+
+  .menubar {
+    display: block;
+  }
+
+  .flashcard {
+    height: auto;
+    aspect-ratio: 3 / 2;
+  }
+
+  .rocket,
+  .astronaut {
+    display: none;
+  }
+
+  .answer-box {
+    flex-direction: column;
+  }
+
+  .answer-box input,
+  .answer-box button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .front,
+  .back {
+    font-size: 1rem;
+  }
+
+  .mode-toggle {
+    width: 90%;
+  }
+
+  .card-counter {
+    font-size: 1rem;
+  }
+}
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .prev,
+  .next {
+    width: 100%;
+    max-width: 300px;
+    font-size: 1rem;
+  }
+
+  .flashcard-container {
+    order: 2;
+    margin: 1rem 0;
+  }
+
+  .prev {
+    order: 1;
+  }
+
+  .next {
+    order: 3;
+}
+}

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FlashGalaxy - Learn Beyond the Stars</title>
+  <link href="https://fonts.googleapis.com/css2?family=Unica+One&family=Space+Mono&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="HomePage.css">
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  <div class="moon"></div>
+  <img class="rocket" src="https://img.icons8.com/ios-filled/100/ffffff/rocket--v1.png" alt="Rocket">
+   <!-- <img class="rocket" src="astro.png" alt="Rocket"> -->
+
+  <nav class="navbar">
+    <div class="container1">
+      <div class="brand"><strong>FlashMaster</strong></div>
+      <div class="menubar" onclick="toggleMenu()">☰</div>
+      <ul class="nav-links" id="navMenu">
+        <li><a class="active" href="#">Home</a></li>
+        <li><a href="modules.html">Modules</a></li>
+        <!-- CREATE DROPDOWN -->
+        <li class="create-dropdown" onclick="toggleCreate(event)">
+          <a href="javascript:void(0)">Create</a>
+          <ul class="dropdown-menu" id="createDropdown">
+            <li><a href="create.html">Add Topic</a></li>
+            <li><a href="addCard.html">Add Cards</a></li>
+          </ul>
+        </li>
+
+        <li><a href="progress.html">To-do List</a></li>
+
+        <!-- USER DROPDOWN -->
+        <li class="user-dropdown" onclick="toggleDropdown(event)">
+          <i class="fa-solid fa-circle-user user-icon"></i>
+          <ul class="dropdown-menu" id="dropdownMenu">
+            <li><a href="myTopics.html">My Topics</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="signup.html">Add Account</a></li>
+            <li><a href="logout.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+
+  <section class="hero">
+    <h1>Learn Beyond the Stars</h1>
+    <div class="subtitle-wrapper">
+      <p class="subtitle">Recall. Write. Flip. A cosmic way to revise anything — coding, aptitude, or the universe.</p>
+    </div>
+    <div class="button">
+      <a href="modules.html" class="btn-glow">Start Your Journey</a>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="card">
+      <h3>🧠 Revise Answers</h3>
+      <p>Improve memory by actively recalling answers. If correct, the card flips—boosting your confidence with each success!</p>
+    </div>
+
+    <div class="card">
+      <h3>🛠 Custom Topics</h3>
+      <p>Create and organize your own topics. Your flashcards are stored locally in your profile for easy access and privacy.</p>
+    </div>
+
+    <div class="card">
+      <h3>🧩 Custom Cards</h3>
+      <p>Build personalized flashcards, grouped by topics. All data is saved locally in your browser.</p>
+    </div>
+
+    <div class="card">
+      <h3>📈 To-do List </h3>
+      <p>Monitor your stats, accuracy, and performance by topic. Stay motivated as you improve!</p>
+    </div>
+
+    <div class="card">
+      <h3>🏆 Challenges</h3>
+      <p>Push your limits with self-competitions to reinforce memory and gain confidence in what you’ve learned.</p>
+    </div>
+  </section>
+  <section class="footer">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>About Us</h4>
+        <p>
+          <i class="fa-solid fa-arrow-right"></i> Welcome to our website! <br>
+          <i class="fa-solid fa-arrow-right"></i> This is a website where you can store your mind <br>
+          <i class="fa-solid fa-arrow-right"></i> Here You Can Revise your Answers, Topics etc <br>
+          <i class="fa-solid fa-arrow-right"></i> The Main Thing is You can customize your cards <br>
+          <i class="fa-solid fa-arrow-right"></i> Just enjoy Our website And Enjoy learning
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="links">
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Home</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Modules</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Create</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> To-do List</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Login</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Signup</a></li>
+        </ul>
+      </div>
+<div class="footer-col">
+        <h4>What we have</h4>
+        <ul class="links">
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Revise Answers</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Custom Topics</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Custom Cards</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Challenges</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Dark-Mode</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Stay Connected</h4>
+        <p>Just Stay Updated With Us To Learn More</p>
+        <form action="#">
+          <input type="text" placeholder="Your email" required>
+          <button type="submit">Join with us</button>
+        </form>
+        <div class="icons">
+          <i class="fa-brands fa-twitter"></i>
+          <i class="fa-brands fa-linkedin"></i>
+          <i class="fa-brands fa-github"></i>
+        </div>
+      </div>
+    </div>
+<div class="footer-bottom">
+      <p>Made With ❤️ By TEAM FLASHMASTER</p>
+    </div>
+</section>
+
+<script>
+  // Starfield generation
+  const stars = document.getElementById("stars");
+  for (let i = 0; i < 100; i++) {
+    const star = document.createElement("div");
+    star.classList.add("star");
+    star.style.top = `${Math.random() * 100}vh`;
+    star.style.left = `${Math.random() * 100}vw`;
+    star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+    stars.appendChild(star);
+  }
+
+  // Hamburger menu toggle
+  function toggleMenu() {
+    const navMenu = document.getElementById('navMenu');
+    navMenu.classList.toggle('show');
+  }
+  function toggleDropdown(event) {
+    event.stopPropagation();
+    document.getElementById("dropdownMenu").classList.toggle("show");
+  }
+
+  function toggleCreate(event) {
+    event.stopPropagation();
+    document.getElementById("createDropdown").classList.toggle("show");
+  }
+
+  document.addEventListener("click", function (e) {
+    if (!e.target.closest(".user-dropdown")) {
+        document.getElementById("dropdownMenu").classList.remove("show");
+    }
+    if (!e.target.closest(".create-dropdown")) {
+        document.getElementById("createDropdown").classList.remove("show");
+    }
+  });
+
+</script>
+</body>
+</html>

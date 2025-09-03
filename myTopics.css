@@ -1,0 +1,447 @@
+/* General Reset and Body Styling - (Copy from create.css or your main style.css for consistency) */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+body {
+    font-family: 'Space Mono', monospace; /* Consistent font */
+    background-color: #0e0e2c; /* Deep space background color */
+    color: #e0e0e0; /* Light text color */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Background gradient and image overlay for space theme */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh; width: 100vw;
+    background: radial-gradient(ellipse at center, rgba(14,14,44,0.8) 0%, rgba(0,0,0,0.95) 100%), url('https://i.imgur.com/zVb6yNj.jpg');
+    background-size: cover;
+    z-index: -3; /* Ensures it's behind everything */
+}
+
+/* Stars Background (consistent with homepage) */
+.stars {
+    position: fixed;
+    z-index: -2; /* Behind main content but above background */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Contain stars within the viewport */
+}
+
+.star {
+    position: absolute;
+    background: white;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    animation: twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* Navbar (consistent with homepage) */
+.navbar {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 15px 0;
+    position: sticky; /* Stays at the top when scrolling */
+    top: 0;
+    z-index: 1000; /* Ensures it's above other content */
+}
+
+.container1 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5rem;
+    max-width: 1200px; /* Limit navbar content width */
+    min-width: 1200px;
+    margin: auto; /* Center navbar content */
+}
+
+.brand {
+    text-shadow: 0 0 3px white;
+    font-size: 2rem;
+    color: #ffde99; /* Golden yellow for brand name */
+}
+
+.menubar {
+    display: none; /* Hidden by default, shown on smaller screens */
+    font-size: 2rem;
+    cursor: pointer;
+    color: white;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 1.2rem;
+    align-items: center; /* Vertically center items */
+}
+
+.nav-links li {
+    position: relative; /* Essential for dropdown positioning */
+    display: flex; /* Keeps items aligned correctly for dropdown parents */
+    align-items: center;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    color: #ddd;
+    padding: 0.5rem;
+    transition: 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+    color: white;
+    border-bottom: 2px solid #f9c74f; /* Yellowish border on hover/active */
+}
+
+/* Dropdown Menu General Styling */
+.dropdown-menu {
+    position: absolute;
+    top: 120%; /* Position below the parent link/icon */
+    right: 0; /* Align to the right of the parent */
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 8px;
+    display: none; /* Hidden by default */
+    flex-direction: column;
+    min-width: 180px;
+    z-index: 1002; /* Above other nav elements */
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none; /* Prevents interaction when hidden */
+}
+
+.dropdown-menu.show {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto; /* Allows interaction when shown */
+}
+
+.dropdown-menu li {
+    padding: 0; /* Reset default list item padding */
+    margin: 0; /* Reset default list item margin */
+    list-style: none; /* Remove bullet points */
+}
+
+.dropdown-menu li a {
+    color: white;
+    text-decoration: none;
+    display: block; /* Make the whole area clickable */
+    padding: 10px 15px; /* Padding for dropdown items */
+    transition: background-color 0.2s;
+    border-bottom: none; /* Remove underline from active state */
+}
+
+.dropdown-menu li a:hover {
+    background-color: #333; /* Slightly darker background on hover */
+    color: white; /* Ensure text color remains white on hover */
+}
+
+/* User Icon Specifics */
+.user-icon {
+    font-size: 1.8rem;
+    color: #ffde99; /* Golden yellow for user icon */
+    padding: 5px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.user-icon:hover {
+    color: #fff; /* Lighter on hover */
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1; /* Allows it to take up available space */
+    /* padding: 2rem 1rem; Added padding for mobile consistency */
+    max-width: 1200px; /* Limit content width */
+    margin: 0 auto; /* Center content */
+    z-index: 1; /* Above background elements */
+    position: relative; /* For z-index to work */
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    color: #b8e3ff; /* Light blue color */
+    text-shadow: 0 0 10px rgba(184, 227, 255, 0.6);
+}
+
+.page-header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.8rem;
+}
+
+.page-header p {
+    font-size: 1.2rem;
+    color: white;
+}
+
+/* Topics Display Area */
+.topics-display-area {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 2rem;
+    box-shadow: 0 0 20px rgba(255, 222, 153, 0.2);
+}
+
+.topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    list-style: none; /* Ensure no bullet points */
+    padding: 0;
+}
+
+.topic-card {
+    background: rgba(0, 0, 0, 0.5); /* Slightly darker background for cards */
+    border-radius: 12px;
+    padding: 15px 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.topic-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+.topic-card h3 {
+    color: #ffde99; /* Golden yellow for topic names */
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+    word-break: break-word; /* Prevents long topic names from overflowing */
+}
+
+.topic-card p {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin-bottom: 15px;
+}
+
+.topic-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.topic-actions button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.topic-actions button.view-btn {
+    background: linear-gradient(135deg, #2196f3, #0b7dda); /* Blue gradient */
+    color: white;
+}
+.topic-actions button.view-btn:hover {
+    background: linear-gradient(135deg, #0b7dda, #2196f3);
+    transform: translateY(-1px);
+}
+
+.topic-actions button.edit-btn {
+    background: linear-gradient(135deg, #ffc107, #ffa000); /* Amber gradient */
+    color: #333;
+}
+.topic-actions button.edit-btn:hover {
+    background: linear-gradient(135deg, #ffa000, #ffc107);
+    transform: translateY(-1px);
+}
+
+.topic-actions button.delete-btn {
+    background: linear-gradient(135deg, #f44336, #d32f2f); /* Red gradient */
+    color: white;
+}
+.topic-actions button.delete-btn:hover {
+    background: linear-gradient(135deg, #d32f2f, #f44336);
+    transform: translateY(-1px);
+}
+
+.no-topics-message {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #bbb;
+    margin-top: 40px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+/* Floating Images (optional, consistent with homepage) */
+.rocket,
+.astronaut {
+    position: fixed;
+    width: 240px;
+    height: auto;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.rocket {
+    top: 40px;
+    right: 30px;
+    animation: floatRocket 4s infinite ease-in-out;
+}
+
+.astronaut {
+    bottom: 20px;
+    left: 20px;
+    animation: float 4s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes floatRocket {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+/* ------------------ Responsive ------------------ */
+@media (max-width: 768px) {
+    .container1 {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0 1rem;
+    }
+
+    .brand {
+        font-size: 1.8rem;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 15px;
+        background: #222;
+        padding: 1rem;
+        border-radius: 8px;
+        z-index: 999;
+        width: calc(100% - 30px);
+        max-width: 200px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-links li {
+        margin: 0.5rem 0;
+        width: 100%;
+        text-align: left; /* Align text left in mobile dropdown */
+    }
+
+    .nav-links li a {
+        display: block;
+        padding: 0.5rem 0; /* Adjust padding for main nav items in mobile */
+    }
+
+    /* Mobile specific dropdown styles */
+    .dropdown-menu {
+        position: static; /* Remove absolute positioning */
+        border: none;
+        background: none;
+        box-shadow: none;
+        min-width: unset;
+        width: 100%; /* Take full width of parent li */
+        padding: 0; /* Remove extra padding */
+        opacity: 1; /* Always visible if parent is visible */
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+    .dropdown-menu li a {
+        padding-left: 20px; /* Indent dropdown items for mobile */
+        font-size: 0.9rem; /* Slightly smaller font */
+    }
+
+    .menubar {
+        display: block;
+    }
+
+    .page-header h1 {
+        font-size: 2.2rem;
+    }
+
+    .page-header p {
+        font-size: 1rem;
+    }
+
+    .topics-display-area {
+        padding: 1.5rem;
+    }
+
+    .topic-grid {
+        grid-template-columns: 1fr; /* Single column on small screens */
+    }
+
+    .rocket,
+    .astronaut {
+        display: none; /* Hide floating images on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding: 1rem;
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .page-header p {
+        font-size: 0.9rem;
+    }
+
+    .topic-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .topic-card p {
+        font-size: 0.85rem;
+    }
+
+    .topic-actions button {
+        font-size: 0.8rem;
+        padding: 7px 12px;
+    }
+}

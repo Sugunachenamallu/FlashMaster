@@ -1,0 +1,569 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8"/> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+  <title>FlashMaster Welcome</title> 
+  <link href="https://fonts.googleapis.com/css2?family=Unica+One&family=Space+Mono&display=swap" rel="stylesheet"> 
+  <style> 
+    /* Base Styles */ 
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    } 
+    body { 
+      width: 100%; 
+      height: 100svh; 
+      font-family: 'Space Mono', monospace; 
+      background-color: #0e0e2c; 
+      color: #e0e0e0; 
+      overflow-x: hidden; 
+      position: relative; 
+    } 
+    body::before { 
+      content: ""; 
+      position: fixed; 
+      top: 0; left: 0; 
+      height: 100vh; width: 100vw; 
+      background: radial-gradient(ellipse at center, rgba(14,14,44,0.8) 0%, rgba(0,0,0,0.95) 100%), url('https://i.imgur.com/zVb6yNj.jpg'); 
+      background-size: cover; 
+      z-index: -3; 
+    } 
+    .stars { 
+      position: fixed; 
+      width: 100%; height: 100%; 
+      overflow: hidden; 
+      z-index: -2; 
+    } 
+    .star { 
+      position: absolute; 
+      background: white; 
+      width: 2px; height: 2px; 
+      border-radius: 50%; 
+      animation: twinkle 3s infinite ease-in-out; 
+    } 
+    @keyframes twinkle { 
+      0%, 100% { opacity: 0.3; } 
+      50% { opacity: 1; } 
+    } 
+    .moon { 
+      position: absolute; 
+      top: 80px; 
+      left: 85%; 
+      width: 100px; 
+      height: 100px; 
+      background: radial-gradient(circle, #e0e0e0, #999); 
+      border-radius: 50%; 
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.4); 
+      z-index: -1; 
+    } 
+    .rocket { 
+      position: absolute; 
+      width: 50px; 
+      height: 100px; 
+      background: url('https://i.imgur.com/WQjZq6Q.png') no-repeat center/contain; 
+      animation: flyRocket 20s linear infinite; 
+    } 
+    .rocket:nth-of-type(1) { top: 70%; left: -60px; animation-delay: 0s; } 
+    .rocket:nth-of-type(2) { top: 50%; left: -60px; animation-delay: 10s; } 
+    .rocket:nth-of-type(3) { top: 30%; left: -60px; animation-delay: 20s; } 
+    @keyframes flyRocket { 
+      0% { transform: translateX(0) translateY(0); opacity: 1; } 
+      100% { transform: translateX(120vw) translateY(-100px); opacity: 0; } 
+    } 
+    .xp-bar { 
+      width: 80%; 
+      height: 12px; 
+      background: #222; 
+      margin: 10px auto 30px; 
+      border-radius: 20px; 
+      overflow: hidden; 
+      box-shadow: 0 0 5px #ffde99; 
+    } 
+    .xp-fill { 
+      height: 100%; 
+      background: linear-gradient(to right, #ffde99, #ff9900); 
+      width: 45%; 
+      animation: loadXP 2s ease-out; 
+    } 
+    @keyframes loadXP { 
+      from { width: 0%; } 
+      to { width: 45%; } 
+    } 
+    nav { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 20px 40px; 
+      backdrop-filter: blur(10px); 
+      background: rgba(25, 25, 25, 0.8); 
+      opacity: 0.9; 
+    } 
+    .logo { 
+      font-family: 'Unica One', cursive; 
+      font-size: 2rem; 
+      color: #ffde99; 
+    } 
+    .links a { 
+      margin-left: 25px; 
+      font-size: 1rem; 
+      color: #ffdfbf; 
+      text-decoration: none; 
+      transition: color 0.3s; 
+    } 
+    .links a:hover { 
+      color: #ffffff; 
+    } 
+    .dark-btn { 
+      padding: 8px 15px; 
+      border: 2px solid #ffde99; 
+      background: transparent; 
+      border-radius: 5px; 
+      color: #ffde99; 
+      cursor: pointer; 
+      margin-left: 20px; 
+      transition: 0.3s ease; 
+    } 
+    .dark-btn:hover { 
+      background: #ffde99; 
+      color: #000; 
+    } 
+    .hero { 
+      text-align: center; 
+      padding: 100px 30px 20px; 
+    } 
+    .hero h1 { 
+      margin-top: 100px;
+      font-size: 3.5rem; 
+      color: #ffde99; 
+      text-shadow: 2px 2px #222; 
+    } 
+    .hero .subtitle { 
+      font-size: 1.3rem; 
+      color: #ccc; 
+      margin: 20px auto 40px; 
+      max-width: 600px; 
+    } 
+    .arcade-btn { 
+      padding: 14px 30px; 
+      font-size: 1.1rem; 
+      border: none; 
+      border-radius: 10px; 
+      background: linear-gradient(to right, #ffde99, #ffb347); 
+      color: #000; 
+      box-shadow: 0 0 10px #ffde99; 
+      cursor: pointer; 
+      text-decoration: none;
+    } 
+    .arcade-btn:hover { 
+      box-shadow: 0 0 20px #ffde99; 
+    } 
+
+    /* --- New CTA Section Styling --- */ 
+    .cta-section { 
+      
+      text-align: center; 
+      padding: 80px 5%; /* Responsive padding */ 
+      background: linear-gradient(to right, #0e0e2c, #222); /* Darker background */ 
+      border-top: 2px solid #ffde99; /* A subtle separator */ 
+      margin-top: 60px; /* Space from the content above */ 
+      width: 70%; /* Ensure it spans full width */ 
+      height: 400px;
+      max-width: 1000px; /* Optional: limit max width on very large screens */ 
+      margin-left: auto; 
+      margin-right: auto; 
+      margin-bottom: 40px; 
+    } 
+
+    .cta-section h2 { 
+      font-family: 'Unica One', cursive; 
+      font-size: 3rem; 
+      color: #ffde99; 
+      margin-bottom: 20px; 
+    } 
+
+    .cta-section p { 
+      font-size: 1.2rem; 
+      color: #ccc; 
+      max-width: 700px; 
+      margin: 0 auto 40px; /* Center paragraph and add bottom margin */ 
+    } 
+
+    /* Media Queries for Responsiveness */ 
+
+    /* For screens smaller than 768px (e.g., tablets and large phones) */ 
+    @media (max-width: 768px) { 
+      nav { 
+        flex-direction: column; 
+        padding: 15px 20px; 
+      } 
+      .logo { 
+        margin-bottom: 15px; 
+      } 
+      .dark-btn { 
+        margin-left: 0; 
+        margin-top: 15px; 
+      } 
+      .hero h1 { 
+        font-size: 2.5rem; 
+      } 
+      .hero .subtitle { 
+        font-size: 1.1rem; 
+        margin: 15px auto 30px; 
+      } 
+      .arcade-btn { 
+        padding: 12px 25px; 
+        font-size: 1rem; 
+      } 
+       
+      .moon { 
+        width: 80px; 
+        height: 80px; 
+        top: 50px; 
+        left: 80%; 
+      } 
+      .rocket { 
+        width: 40px; 
+        height: 80px; 
+      } 
+
+      /* CTA Section responsiveness for tablets */ 
+      .cta-section { 
+        padding: 60px 3%; 
+        width: 70%;
+        
+        height: fit-content;
+      } 
+      .cta-section h2 { 
+        font-size: 2.2rem; 
+      } 
+      .cta-section p { 
+        font-size: 1.1rem; 
+      } 
+    } 
+
+    /* For screens smaller than 480px (e.g., mobile phones) */ 
+    @media (max-width: 480px) { 
+      body{
+        width: fit-content;
+      }
+      nav { 
+        padding: 10px 15px; 
+      } 
+      .logo { 
+        font-size: 1.8rem; 
+        margin-bottom: 10px; 
+      } 
+      .dark-btn { 
+        margin-top: 10px; 
+      } 
+      .hero { 
+        padding: 80px 20px 15px; 
+      } 
+      .hero h1 { 
+        font-size: 2rem; 
+      } 
+      .hero .subtitle { 
+        font-size: 1rem; 
+        margin: 10px auto 20px; 
+      } 
+      .arcade-btn { 
+        padding: 10px 20px; 
+        font-size: 0.9rem; 
+      } 
+      .xp-bar { 
+        width: 90%; 
+      } 
+       
+      .moon { 
+        width: 60px; 
+        height: 60px; 
+        top: 30px; 
+        left: 75%; 
+      } 
+      .rocket { 
+        width: 30px; 
+        height: 60px; 
+      } 
+
+      /* CTA Section responsiveness for mobile phones */ 
+      .cta-section { 
+        padding: 40px 2%; 
+        width: 85%;
+        height:fit-content;
+      } 
+      .cta-section h2 { 
+        font-size: 1.8rem; 
+      } 
+      .cta-section p { 
+        font-size: 1rem; 
+      } 
+    } 
+
+/* Footer */
+.footer {
+      background: #111920;
+      width: 100%;
+    }
+
+    .footer .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 40px 60px;
+      gap: 3rem;
+    }
+
+    .footer-col {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .footer-col h4 {
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .footer-col .links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-col .links li {
+      line-height: 2rem;
+    }
+
+ .footer-col .links li a {
+      text-decoration: none;
+      color: #bfbfbf;
+      font-size: 0.8rem;
+    }
+
+    .footer-col .links li a:hover {
+      color: #d4a2a2;
+    }
+
+    .footer-col p {
+      margin: 0 0 15px 0;
+      color: #bfbfbf;
+      max-width: 300px;
+      font-size: 0.8rem;
+    }
+
+    .footer-col form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex-direction: column;
+    }
+
+    .footer-col input {
+      height: 45px;
+      border-radius: 6px;
+      background: none;
+      width: 250px;
+      outline: none;
+      border: 1px solid #7489C6;
+      color: #fff;
+      padding-left: 10px;
+      font-size: 1rem;
+    }
+
+.footer-col input::placeholder {
+      color: #ccc;
+    }
+
+    .footer-col form button {
+      background: #fff;
+      outline: none;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 250px;
+      font-size: 1rem;
+      transition: 0.2s ease;
+    }
+
+    .footer-col form button:hover {
+      background: #946666;
+      color: #fff;
+    }
+
+    .footer-col .icons {
+      display: flex;
+      margin-top: 20px;
+      gap: 20px;
+      cursor: pointer;
+    }
+
+    .footer-col .icons i {
+      color: #afb6c7;
+      font-size: 20px;
+    }
+ .footer-col .icons i:hover {
+      color: #9f6e6e;
+    }
+
+    .footer-bottom {
+      width: 100%;
+      background-color: #0e141a;
+      padding: 15px 0;
+      border-top: 1px solid #2a2a2a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #bbb;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 576px) {
+      .footer .footer-row {
+        flex-direction: column;
+        padding: 20px;
+        gap: 2rem;
+      }
+
+      .footer-col {
+        align-items: center;
+        text-align: center;
+        min-width: 100%;
+      }
+
+      .footer-col form {
+        align-items: center;
+      }
+
+.footer-col input,
+      .footer-col form button {
+        width: 90%;
+      }
+
+      .footer-col .icons {
+        justify-content: center;
+      }
+
+      .footer-bottom {
+        font-size: 0.9rem;
+        padding: 10px;
+      }
+    }
+ @media (min-width: 577px) and (max-width: 992px) {
+      .footer .footer-row {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 2rem;
+      }
+
+      .footer-col {
+        min-width: 45%;
+        margin-bottom: 30px;
+      }
+
+      .footer-col input,
+      .footer-col form button {
+        width: 100%;
+      }
+}
+  </style> 
+</head> 
+<body> 
+  <div class="stars" id="stars"></div> 
+  <div class="moon"></div> 
+  <div class="rocket"></div> 
+  <div class="rocket"></div> 
+  <div class="rocket"></div> 
+   
+  <section class="hero"> 
+ <h1>Learn Beyond the Stars</h1> 
+ <p class="subtitle">Recall. Write. Flip. A cosmic way to revise anything — coding, aptitude, or the universe.</p> 
+ <div class="xp-bar"><div class="xp-fill"></div></div> 
+ <!-- <button class="arcade-btn">🎮 Begin Mission</button>  -->
+ </section> 
+
+<section class="cta-section"> 
+ <h2>Ready to Launch Your Learning?</h2> 
+ <p>Sign up now and embark on your journey to knowledge mastery. It's free, it's cosmic, it's FlashMaster!</p> 
+ <a href="login.html" class="arcade-btn">Let's Begin</a>
+ </section> 
+
+ <section class="footer">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>About Us</h4>
+        <p>
+          <i class="fa-solid fa-arrow-right"></i> Welcome to our website! <br>
+          <i class="fa-solid fa-arrow-right"></i> This is a website where you can store your mind <br>
+          <i class="fa-solid fa-arrow-right"></i> Here You Can Revise your Answers, Topics etc <br>
+          <i class="fa-solid fa-arrow-right"></i> The Main Thing is You can customize your cards <br>
+          <i class="fa-solid fa-arrow-right"></i> Just enjoy Our website And Enjoy learning
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul class="links">
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Home</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Modules</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Create</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> To-do List</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Login</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Signup</a></li>
+        </ul>
+      </div>
+<div class="footer-col">
+        <h4>What we have</h4>
+        <ul class="links">
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Revise Answers</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Custom Topics</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Custom Cards</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Challenges</a></li>
+          <li><a href="#"><i class="fa-solid fa-arrow-right"></i> Dark-Mode</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Stay Connected</h4>
+        <p>Just Stay Updated With Us To Learn More</p>
+        <form action="#">
+          <input type="text" placeholder="Your email" required>
+          <button type="submit">Join with us</button>
+        </form>
+        <div class="icons">
+          <i class="fa-brands fa-twitter"></i>
+          <i class="fa-brands fa-linkedin"></i>
+          <i class="fa-brands fa-github"></i>
+        </div>
+      </div>
+    </div>
+<div class="footer-bottom">
+      <p>Made With ❤️ By TEAM FLASHMASTER</p>
+    </div>
+</section>
+ 
+ <script> 
+ const stars = document.getElementById("stars"); 
+ // Generate 100 stars randomly across the screen 
+for (let i = 0; i < 100; i++) { 
+ const star = document.createElement("div"); 
+ star.classList.add("star"); 
+ star.style.top = `${Math.random() * 100}vh`; 
+ star.style.left = `${Math.random() * 100}vw`; 
+ star.style.animationDuration = `${Math.random() * 3 + 2}s`; // Randomize twinkle speed 
+stars.appendChild(star); 
+ } 
+
+  
+ </script> 
+</body>
+</html>

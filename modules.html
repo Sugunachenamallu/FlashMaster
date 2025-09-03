@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modules</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="modules.css" />
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+  
+     <nav class="navbar">
+    <div class="container1">
+      <div class="brand"><strong>FlashMaster</strong></div>
+      <div class="menubar" onclick="toggleMenu()">☰</div>
+      <ul class="nav-links" id="navMenu">
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a class="active" href="modules.html">Modules</a></li>
+        <!-- CREATE DROPDOWN -->
+        <li class="create-dropdown" onclick="toggleCreate(event)">
+          <a href="javascript:void(0)">Create</a>
+          <ul class="dropdown-menu" id="createDropdown">
+            <li><a href="create.html">Add Topic</a></li>
+            <li><a href="addCard.html">Add Cards</a></li>
+          </ul>
+        </li>
+
+        <li><a href="progress.html">To-do List</a></li>
+
+        <!-- USER DROPDOWN -->
+        <li class="user-dropdown" onclick="toggleDropdown(event)">
+          <i class="fa-solid fa-circle-user user-icon"></i>
+          <ul class="dropdown-menu" id="dropdownMenu">
+            <li><a href="myTopics.html">My Topics</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="signup.html">Add Account</a></li>
+            <li><a href="logout.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+  <header>
+  <div>
+    <h1>Space Missions</h1>
+    <p>Choose a module and enter the orbit of knowledge</p>
+  </div>
+  </header>
+  <main class="grid">
+    <a href="aptitude.html" class="module">
+    🔢 Aptitude
+    </a>
+    <a href="reasoning.html" class="module">
+    🧠 Reasoning
+    </a>
+    <a href="dsa.html" class="module">
+    🛠 Data Structures
+    </a>
+    <a href="codinglogic.html" class="module">
+    💡 Coding Logic
+    </a>
+    <a href="sql.html" class="module">
+    🖥 SQL 
+    </a>
+    <a href="cn.html" class="module">
+    🌐 Computer Networks
+    </a>
+    <a href="dbms.html" class="module">🛢 DBMS</a>
+    <a href="os.html" class="module">
+    💾 Operating Systems
+    </a>
+    <a href="ai.html" class="module">
+    🤖 Artificial Intelligence
+    </a>
+    <a href="ml.html" class="module">
+    📊 Machine Learning
+    </a>
+    <a href="create.html" class="module custom">
+    ✏ Create Your Mission
+    </a>
+  </main>
+
+  <script src="modules.js"></script>
+</body>
+</html>

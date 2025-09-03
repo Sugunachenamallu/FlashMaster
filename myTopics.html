@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlashMaster - My Topics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        /* --- General Reset and Body Styling --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            min-height: 100vh;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+        
+        body {
+            font-family: 'Space Mono', monospace;
+            background-color: #0e0e2c;
+            color: #e0e0e0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            height: 100vh; width: 100vw;
+            background: radial-gradient(ellipse at center, rgba(14,14,44,0.8) 0%, rgba(0,0,0,0.95) 100%), url('https://i.imgur.com/zVb6yNj.jpg');
+            background-size: cover;
+            z-index: -3;
+        }
+        
+        .stars {
+            position: fixed;
+            z-index: -2;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        /* --- Navbar --- */
+        .navbar {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .container1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .brand {
+            text-shadow: 0 0 3px white;
+            font-size: 2rem;
+            color: #ffde99;
+        }
+
+        .menubar {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 1.2rem;
+            align-items: center;
+        }
+        
+        .nav-links li {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-links li a {
+            text-decoration: none;
+            color: #ddd;
+            padding: 0.5rem;
+            transition: 0.3s;
+        }
+        
+        .nav-links li a.active,
+        .nav-links li a:hover {
+            color: white;
+            border-bottom: 2px solid #f9c74f;
+        }
+        
+        /* Dropdown Menu General Styling */
+        .dropdown-menu {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background-color: #222;
+            border: 1px solid #444;
+            border-radius: 8px;
+            display: none;
+            flex-direction: column;
+            min-width: 180px;
+            z-index: 1002;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+            pointer-events: none;
+        }
+        
+        .dropdown-menu.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+        
+        .dropdown-menu li {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        
+        .dropdown-menu li a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 10px 15px;
+            transition: background-color 0.2s;
+            border-bottom: none;
+        }
+        
+        .dropdown-menu li a:hover {
+            background-color: #333;
+            color: white;
+        }
+        
+        .user-icon {
+            font-size: 1.8rem;
+            color: #ffde99;
+            padding: 5px;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .user-icon:hover {
+            color: #fff;
+        }
+        
+        /* --- Main Content Area --- */
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            z-index: 1;
+            position: relative;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: #b8e3ff;
+            text-shadow: 0 0 10px rgba(184, 227, 255, 0.6);
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: white;
+        }
+        
+        /* --- Topics Display Area --- */
+        .topics-display-area {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 2rem;
+            box-shadow: 0 0 20px rgba(255, 222, 153, 0.2);
+        }
+        
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            list-style: none;
+            padding: 0;
+        }
+        
+        .topic-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .topic-card h3 {
+            color: #ffde99;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+        
+        .topic-card p {
+            font-size: 0.95rem;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        
+        .topic-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+        }
+        
+        .topic-actions button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: bold;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+        
+        .topic-actions button.view-btn {
+            background: linear-gradient(135deg, #2196f3, #0b7dda);
+            color: white;
+        }
+        .topic-actions button.view-btn:hover {
+            background: linear-gradient(135deg, #0b7dda, #2196f3);
+            transform: translateY(-1px);
+        }
+        
+        .topic-actions button.edit-btn {
+            background: linear-gradient(135deg, #ffc107, #ffa000);
+            color: #333;
+        }
+        .topic-actions button.edit-btn:hover {
+            background: linear-gradient(135deg, #ffa000, #ffc107);
+            transform: translateY(-1px);
+        }
+        
+        .topic-actions button.delete-btn {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+        }
+        .topic-actions button.delete-btn:hover {
+            background: linear-gradient(135deg, #d32f2f, #f44336);
+            transform: translateY(-1px);
+        }
+        
+        .no-topics-message {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #bbb;
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        
+        /* Floating Images */
+        .rocket, .astronaut {
+            position: fixed;
+            width: 240px;
+            height: auto;
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .rocket {
+            top: 40px;
+            right: 30px;
+            animation: floatRocket 4s infinite ease-in-out;
+        }
+        
+        .astronaut {
+            bottom: 20px;
+            left: 20px;
+            animation: float 4s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes floatRocket {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        /* ------------------ Responsive Styles ------------------ */
+        @media (max-width: 992px) {
+            .container1 {
+                padding: 0 2rem;
+            }
+            .nav-links {
+                gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container1 {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 1rem;
+            }
+
+            .brand {
+                font-size: 1.8rem;
+            }
+
+            .menubar {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px; /* Adjusted to sit below the navbar on mobile */
+                right: 15px;
+                background: #222;
+                padding: 1rem;
+                border-radius: 8px;
+                z-index: 999;
+                width: calc(100% - 30px);
+                max-width: 250px; /* Increased max width for better readability */
+                box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+                transition: transform 0.3s ease-in-out;
+                transform: translateX(100%); /* Initially off-screen */
+            }
+
+            .nav-links.show {
+                display: flex;
+                transform: translateX(0); /* Slide in */
+            }
+            
+            .nav-links li {
+                margin: 0.5rem 0;
+                width: 100%;
+                text-align: left;
+            }
+            
+            .nav-links li a {
+                display: block;
+                padding: 0.5rem 0;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                border: none;
+                background: none;
+                box-shadow: none;
+                min-width: unset;
+                width: 100%;
+                padding: 0;
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: auto;
+            }
+
+            .dropdown-menu li a {
+                padding-left: 20px;
+                font-size: 0.9rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .topics-display-area {
+                padding: 1.5rem;
+            }
+
+            .topic-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rocket, .astronaut {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .page-header p {
+                font-size: 0.9rem;
+            }
+
+            .topic-card h3 {
+                font-size: 1.4rem;
+            }
+
+            .topic-card p {
+                font-size: 0.85rem;
+            }
+
+            .topic-actions button {
+                font-size: 0.8rem;
+                padding: 7px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <nav class="navbar">
+    <div class="container1">
+      <div class="brand"><strong>FlashMaster</strong></div>
+      <div class="menubar" onclick="toggleMenu()">☰</div>
+      <ul class="nav-links" id="navMenu">
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="modules.html">Modules</a></li>
+        <!-- CREATE DROPDOWN -->
+        <li class="create-dropdown" onclick="toggleCreate(event)">
+          <a href="javascript:void(0)">Create</a>
+          <ul class="dropdown-menu" id="createDropdown">
+            <li><a href="create.html">Add Topic</a></li>
+            <li><a href="addCard.html">Add Cards</a></li>
+          </ul>
+        </li>
+
+        <li><a href="progress.html">To-do List</a></li>
+
+        <!-- USER DROPDOWN -->
+        <li class="user-dropdown" onclick="toggleDropdown(event)">
+          <i class="fa-solid fa-circle-user user-icon"></i>
+          <ul class="dropdown-menu" id="dropdownMenu">
+            <li><a href="myTopics.html">My Topics</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="signup.html">Add Account</a></li>
+            <li><a href="logout.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+        <div class="page-header">
+            <h1>My Flashcard Topics</h1>
+            <p>Your curated collection of knowledge!</p>
+        </div>
+
+        <div class="topics-display-area">
+            <div id="topicsContainer" class="topic-grid">
+            </div>
+            <p id="noTopicsMessage" class="no-topics-message" style="display: none;">
+                You haven't created any topics yet. Go to "Create" to get started!
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Starfield background generation
+        const stars = document.getElementById("stars");
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement("div");
+            star.classList.add("star");
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            stars.appendChild(star);
+        }
+
+        // --- Navbar Dropdown Toggles (consistent across pages) ---
+        function toggleMenu() {
+            document.getElementById("navMenu").classList.toggle("show");
+            document.getElementById("createDropdownMenu").classList.remove("show");
+            document.getElementById("userDropdownMenu").classList.remove("show");
+        }
+
+        function toggleCreateDropdown(event) {
+            event.stopPropagation();
+            const createDropdown = document.getElementById("createDropdownMenu");
+            createDropdown.classList.toggle("show");
+            document.getElementById("userDropdownMenu").classList.remove("show");
+        }
+
+        function toggleUserDropdown(event) {
+            event.stopPropagation();
+            const userDropdown = document.getElementById("userDropdownMenu");
+            userDropdown.classList.toggle("show");
+            document.getElementById("createDropdownMenu").classList.remove("show");
+        }
+
+        document.addEventListener("click", function (e) {
+            const createDropdown = document.getElementById("createDropdownMenu");
+            const createDropdownParent = document.querySelector(".create-dropdown");
+
+            const userDropdown = document.getElementById("userDropdownMenu");
+            const userDropdownParent = document.querySelector(".user-dropdown");
+
+            if (createDropdown && !createDropdownParent.contains(e.target)) {
+                createDropdown.classList.remove("show");
+            }
+            if (userDropdown && !userDropdownParent.contains(e.target)) {
+                userDropdown.classList.remove("show");
+            }
+
+            const navMenu = document.getElementById('navMenu');
+            const menubar = document.querySelector('.menubar');
+            if (navMenu.classList.contains('show') && !navMenu.contains(e.target) && !menubar.contains(e.target)) {
+                navMenu.classList.remove('show');
+            }
+        });
+
+
+        // --- Page Specific JavaScript for My Topics ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const topicsContainer = document.getElementById("topicsContainer");
+            const noTopicsMessage = document.getElementById("noTopicsMessage");
+
+            function loadAndDisplayTopics() {
+                let allTopics = JSON.parse(localStorage.getItem('flashmaster_custom_topics')) || [];
+
+                topicsContainer.innerHTML = '';
+
+                if (allTopics.length === 0) {
+                    noTopicsMessage.style.display = 'block';
+                    return;
+                } else {
+                    noTopicsMessage.style.display = 'none';
+                }
+
+                allTopics.sort((a, b) => new Date(b.lastModified || b.id) - new Date(a.lastModified || a.id));
+
+                allTopics.forEach(topic => {
+                    const topicCard = document.createElement("div");
+                    topicCard.classList.add("topic-card");
+                    
+                    const dateValue = topic.lastModified || topic.id;
+                    const date = new Date(dateValue);
+                    const formattedDate = date.toLocaleString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric', 
+                        hour: '2-digit', minute: '2-digit', hour12: true 
+                    });
+
+                    topicCard.innerHTML = `
+                        <h3>${topic.topicName}</h3>
+                        <p>${topic.cards.length} Flashcards</p>
+                        <p>Last Modified: ${formattedDate === 'Invalid Date' ? 'N/A' : formattedDate}</p>
+                        <div class="topic-actions">
+                            <button class="view-btn" data-topic-id="${topic.id}">View Cards</button>
+                            <button class="edit-btn" data-topic-id="${topic.id}">Edit Topic</button>
+                            <button class="delete-btn" data-topic-id="${topic.id}">Delete</button>
+                        </div>
+                    `;
+                    topicsContainer.appendChild(topicCard);
+                });
+
+                topicsContainer.addEventListener('click', (event) => {
+                    const target = event.target;
+                    if (target.tagName === 'BUTTON' && target.dataset.topicId) {
+                        const topicId = parseInt(target.dataset.topicId, 10);
+                        if (isNaN(topicId)) {
+                            console.error("Invalid topic ID from button:", target.dataset.topicId);
+                            return;
+                        }
+
+                        if (target.classList.contains('view-btn')) {
+                            viewCards(topicId);
+                        } else if (target.classList.contains('edit-btn')) {
+                            editTopic(topicId);
+                        } else if (target.classList.contains('delete-btn')) {
+                            deleteTopic(topicId);
+                        }
+                    }
+                });
+            }
+
+            function viewCards(topicId) {
+                console.log(`Attempting to view cards for topic ID: ${topicId}`);
+                // Redirect to the new viewCards page, passing the topic ID
+                window.location.href = `viewCards.html?topicId=${topicId}`;
+            }
+
+            function editTopic(topicId) {
+                console.log(`Attempting to edit topic ID: ${topicId}`);
+                window.location.href = `create.html?topicId=${topicId}`;
+            }
+
+            function deleteTopic(topicId) {
+                if (confirm("Are you sure you want to delete this topic and all its flashcards? This action cannot be undone.")) {
+                    let allTopics = JSON.parse(localStorage.getItem('flashmaster_custom_topics')) || [];
+                    
+                    const initialLength = allTopics.length; 
+                    const updatedTopics = allTopics.filter(topic => topic.id !== topicId); 
+                    
+                    localStorage.setItem('flashmaster_custom_topics', JSON.stringify(updatedTopics));
+                    
+                    if (updatedTopics.length < initialLength) {
+                        console.log(`Successfully deleted topic with ID: ${topicId}`);
+                    } else {
+                        console.warn(`Failed to find or delete topic with ID: ${topicId}. It might not exist. Current IDs in storage:`, allTopics.map(t => t.id));
+                    }
+
+                    loadAndDisplayTopics();
+                    alert("Topic deleted successfully!");
+                }
+            }
+
+            loadAndDisplayTopics();
+
+            window.toggleMenu = toggleMenu;
+            window.toggleCreateDropdown = toggleCreateDropdown;
+            window.toggleUserDropdown = toggleUserDropdown;
+        });
+    </script>
+    <!-- <script src="myTopics.js"></script> -->
+</body>
+</html>

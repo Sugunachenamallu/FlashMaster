@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FlashMaster - Add Cards to Existing Topic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            min-height: 100vh;
+            overflow-x: hidden; 
+        }
+
+        body {
+            font-family: 'Space Mono', monospace; 
+            background-color: #0e0e2c;
+            color: #e0e0e0; 
+            position: relative;
+            display: flex;
+            flex-direction: column;
+             background-size: cover;
+        }
+
+        .stars {
+            position: fixed;
+            z-index: -2; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; 
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+.navbar {
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.4);
+  color: white;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.container1 {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  padding: 0 1.2rem;
+}
+
+.brand {
+  text-shadow: 0px 0px 3px white ;
+  font-size: 2.2rem;
+  text-align: left;
+  font-weight: bold;
+  letter-spacing: 2px;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  color: #ffde99;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #ddd;
+  padding: 0.4rem 0.7rem;
+  transition: 0.3s;
+}
+
+.nav-links li a.active,
+.nav-links li a:hover {
+  color: #fff;
+  border-bottom: 2px solid #f9c74f;
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center;
+}
+
+.menubar {
+  font-size: 2rem;
+  color: #fff;
+  display: none;
+  cursor: pointer;
+}
+/* Dropdown shared */
+    .dropdown-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background-color: #222;
+      border: 1px solid #444;
+      border-radius: 8px;
+      display: none;
+      flex-direction: column;
+      min-width: 180px;
+      z-index: 1002;
+      cursor: pointer;
+    }
+
+    .dropdown-menu.show {
+      display: flex;
+    }
+
+    .dropdown-menu li {
+      padding: 10px 15px;
+    }
+
+    .dropdown-menu li a {
+      color: white;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    dropdown-menu li a:hover {
+      color: white;
+    }
+
+    .user-icon {
+      font-size: 1.8rem;
+      color: #ffde99;
+      padding: 5px;
+    }
+
+
+.dark-btn {
+  padding: 8px 15px;
+  border: 2px solid #ffde99;
+  background: transparent;
+  border-radius: 5px;
+  color: #ffde99;
+  cursor: pointer;
+  margin-left: 20px;
+  transition: 0.3s ease;
+}
+
+.dark-btn:hover {
+  background: #ffde99;
+  color: #000;
+}
+
+@media (max-width: 900px) {
+  .container1 {
+    max-width: 98vw;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .menubar {
+    display: block;
+  }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #222;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 180px;
+    border-radius: 8px;
+    padding: 10px 0;
+    z-index: 1001;
+  }
+  .nav-links.show {
+    display: flex;
+  }
+  .nav-links li {
+    text-align: center;
+    padding: 10px 0;
+  }
+}
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: #b8e3ff;
+            text-shadow: 0 0 10px rgba(184, 227, 255, 0.6);
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: white;
+        }
+        .create-form-section {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: flex-end; 
+            box-shadow: 0 0 20px rgba(255, 222, 153, 0.2);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 250px; 
+        }
+
+        .form-group label {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="number"] {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 2px solid #6c7bff;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="number"]:focus {
+            outline: none;
+            border-color: #ffde99;
+            box-shadow: 0 0 10px rgba(255, 222, 153, 0.6); 
+        }
+
+        .form-group input::placeholder {
+            color: #bbb;
+        }
+        .color-picker-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center; 
+            justify-content: center;
+            min-width: 150px;
+            flex: none; 
+        }
+
+        .color-picker-group label {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 1rem; 
+        }
+
+        .form-group input[type="color"] {
+            -webkit-appearance: none; 
+            -moz-appearance: none;
+            appearance: none;
+            width: 60px; 
+            height: 60px;
+            border: 3px solid #6c7bff;
+            border-radius: 50%; 
+            padding: 0;
+            cursor: pointer;
+            transition: border-color 0.3s ease, transform 0.2s ease;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        .form-group input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .form-group input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%; 
+        }
+
+        .form-group input[type="color"]:hover {
+            transform: scale(1.05); 
+            border-color: whitesmoke;
+        }
+
+        
+        .action-button {
+            padding: 0.8rem 1.8rem;
+            background: linear-gradient(135deg, #2196f3, #0b7dda); 
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            border: 2px solid #58b0f7;
+            align-self: flex-end; 
+        }
+
+        .action-button:hover {
+            background: linear-gradient(135deg, #0b7dda, #2196f3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.6);
+        }
+
+        .save-button {
+            background: linear-gradient(135deg, #4caf50, #2e8b57); 
+            border: 2px solid #7edc82; 
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            margin-top: 2rem; 
+        }
+
+        .save-button:hover {
+            background: linear-gradient(135deg, #2e8b57, #4caf50);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+        }
+
+        .flashcard-editor-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .flashcard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 1.5rem;
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 2rem;
+        }
+
+        .flashcard-editor {
+            perspective: 1000px;
+            width: 100%;
+            height: 350px; 
+            position: relative;
+        }
+
+        .flashcard-editor-inner {
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s ease-out;
+            border-radius: 18px;
+            border: 3px solid #6c7bff;
+            box-shadow: 0 0 15px rgba(108, 123, 255, 0.5);
+            position: relative; 
+        }
+
+        .flashcard-editor-inner.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .front-editor, .back-editor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .front-editor {
+            background: linear-gradient(135deg, var(--front-card-color, #1f006b), var(--front-card-color-darker, #3b00a0)); /* Use CSS variables */
+            color: #b8e3ff;
+        }
+
+        .back-editor {
+            background: linear-gradient(135deg, var(--back-card-color, #3b00a0), var(--back-card-color-darker, #1f006b)); /* Use CSS variables */
+            color: #ffde99;
+            transform: rotateY(180deg);
+        }
+
+        .front-editor label, .back-editor label {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #f9c74f;
+        }
+
+        .flashcard-editor textarea {
+            width: calc(100% - 20px); /* Slightly less than 100% to account for padding */
+            height: calc(100% - 60px); /* Adjust height for label and button */
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #58b0f7;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: #e0e0e0;
+            font-size: 0.95rem;
+            resize: none; /* Disable manual resize */
+            font-family: 'Space Mono', monospace;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+            margin-top: 5px; /* Space between label and textarea */
+        }
+
+        .flashcard-editor textarea:focus {
+            outline: none;
+            border-color: #ffde99;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+        .flip-card-button {
+            position: absolute;
+            bottom: 10px; 
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background 0.3s ease, transform 0.2s ease;
+            z-index: 2; 
+            backdrop-filter: blur(5px); 
+        }
+
+        .flip-card-button:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateX(-50%) translateY(-2px);
+        }
+
+        .message-box {
+            background-color: rgba(76, 175, 80, 0.9); 
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            display: none; 
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.6);
+        }
+        .message-box.error {
+            background-color: rgba(244, 67, 54, 0.9);
+            box-shadow: 0 0 15px rgba(244, 67, 54, 0.6);
+        }
+
+        .rocket,
+        .astronaut {
+            position: fixed;
+            width: 240px;
+            height: auto;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .rocket {
+            top: 40px;
+            right: 30px;
+            animation: floatRocket 4s infinite ease-in-out;
+        }
+
+        .astronaut {
+            bottom: 20px;
+            left: 20px;
+            animation: float 4s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes floatRocket {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* @media (max-width: 768px) {
+            .container1 {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 0 1rem;
+            }
+
+            .brand {
+                font-size: 1.8rem;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                right: 15px;
+                background: #222;
+                padding: 1rem;
+                border-radius: 8px;
+                z-index: 999;
+                width: calc(100% - 30px);
+                max-width: 200px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 0.5rem 0;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links li a {
+                display: block;
+            }
+
+            .menubar {
+                display: block;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .create-form-section {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1.5rem;
+            }
+
+            .form-group {
+                min-width: unset;
+                width: 100%;
+            }
+
+            .action-button {
+                width: 100%;
+                align-self: center; 
+            }
+
+            .flashcard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .rocket,
+            .astronaut {
+                display: none; 
+            }
+
+            .flashcard-editor {
+                height: 220px; 
+            }
+
+            .flashcard-editor textarea {
+                height: calc(100% - 55px);
+            }
+        } */
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .page-header p {
+                font-size: 0.9rem;
+            }
+
+            .form-group label {
+                font-size: 1rem;
+            }
+
+            .form-group input {
+                font-size: 0.9rem;
+                padding: 0.6rem 0.8rem;
+            }
+
+            .action-button {
+                font-size: 1rem;
+                padding: 0.7rem 1.4rem;
+            }
+
+            .flashcard-editor {
+                height: 180px; 
+            }
+
+            .flashcard-editor textarea {
+                font-size: 0.85rem;
+                height: calc(100% - 50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+<nav class="navbar">
+    <div class="container1">
+      <div class="brand"><strong>FlashMaster</strong></div>
+      <div class="menubar" onclick="toggleMenu()">☰</div>
+      <ul class="nav-links" id="navMenu">
+        <li><a href="HomePage.html">Home</a></li>
+        <li><a href="modules.html">Modules</a></li>
+        <!-- CREATE DROPDOWN -->
+        <li class="create-dropdown" onclick="toggleCreate(event)">
+          <a href="javascript:void(0)">Create</a>
+          <ul class="dropdown-menu" id="createDropdown">
+            <li><a href="create.html">Add Topic</a></li>
+            <li><a class="active" href="addCard.html">Add Cards</a></li>
+          </ul>
+        </li>
+
+        <li><a href="progress.html">To-do List</a></li>
+
+        <!-- USER DROPDOWN -->
+        <li class="user-dropdown" onclick="toggleDropdown(event)">
+          <i class="fa-solid fa-circle-user user-icon"></i>
+          <ul class="dropdown-menu" id="dropdownMenu">
+            <li><a href="myTopics.html">My Topics</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="account.html">Add Account</a></li>
+            <li><a href="logout.html">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+        <div class="page-header">
+            <h1>Add Cards to Existing Topic</h1>
+            <p>Expand your cosmic revision journey!</p>
+        </div>
+
+        <div class="create-form-section">
+            <div class="form-group">
+                <label for="topicName">Topic Name:</label>
+                <input type="text" id="topicName" placeholder="e.g., Data Structures, Space Facts" value="Data Structures & Algorithms" />
+            </div>
+            <div class="form-group">
+                <label for="numCards">Number of New Flashcards:</label>
+                <input type="number" id="numCards" min="1" value="2" />
+            </div>
+            <div class="form-group color-picker-group">
+                <label for="frontColor">Front Card Color:</label>
+                <input type="color" id="frontColor" value="#1f006b" />
+            </div>
+            <div class="form-group color-picker-group">
+                <label for="backColor">Back Card Color:</label>
+                <input type="color" id="backColor" value="#3b00a0" />
+            </div>
+            <button id="generateCardsBtn" class="action-button">Generate Cards</button>
+        </div>
+
+        <div class="flashcard-editor-area">
+            <div id="flashcardEditorContainer" class="flashcard-grid">
+                </div>
+            <button id="saveFlashcardsBtn" class="action-button save-button" style="display: none;">Add Cards to Topic</button>
+            <div id="messageBox" class="message-box" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+           
+            const topicNameInput = document.getElementById("topicName");
+            const numCardsInput = document.getElementById("numCards");
+            const frontColorInput = document.getElementById("frontColor");
+            const backColorInput = document.getElementById("backColor");
+            const generateCardsBtn = document.getElementById("generateCardsBtn");
+            const flashcardEditorContainer = document.getElementById("flashcardEditorContainer");
+            const saveFlashcardsBtn = document.getElementById("saveFlashcardsBtn");
+            const messageBox = document.getElementById("messageBox");
+            const navMenu = document.getElementById("navMenu");
+            const starsContainer = document.getElementById("stars");
+            const ALLOWED_TOPICS = [
+                "Data Structures",
+                "Aptitude",
+                "Reasoning",
+                "Computer Networks",
+                "Operating Systems",
+                "Artificial Intelligence",
+                "Machine Learning",
+                "SQL",
+                "Dbms",
+                "Coding Logics",
+                
+            ].map(topic => topic.toLowerCase());
+
+          
+
+            /**
+             * Displays a temporary message box to the user within the page.
+             * @param {string} message - The message content.
+             * @param {string} type - The type of message ('success', 'error', 'info').
+             */
+            function showMessage(message, type = 'success') {
+                messageBox.textContent = message;
+                messageBox.className = 'message-box'; 
+                messageBox.classList.add(type);
+
+                if (type === 'success') {
+                    messageBox.style.backgroundColor = 'rgba(129, 230, 217, 0.9)';
+                    messageBox.style.color = '#1a202c';
+                } else if (type === 'error') {
+                    messageBox.style.backgroundColor = 'rgba(252, 129, 129, 0.9)'; 
+                    messageBox.style.color = '#1a202c';
+                } else {
+                    messageBox.style.backgroundColor = 'rgba(99, 179, 237, 0.9)'; 
+                    messageBox.style.color = '#1a202c'; 
+                }
+                
+                messageBox.style.display = 'block';
+                setTimeout(() => {
+                    messageBox.style.display = 'none';
+                }, 3000); // Hide after 3 seconds
+            }
+
+            /**
+             * Darkens a given hex color by a specified percentage.
+             * @param {string} hex - The hex color string (e.g., "#RRGGBB").
+             * @param {number} percent - The percentage to darken (e.g., -0.2 for 20% darker).
+             * @returns {string} The darkened hex color string.
+             */
+            function darkenColor(hex, percent) {
+                let f = parseInt(hex.slice(1), 16),
+                    t = percent < 0 ? 0 : 255,
+                    p = percent < 0 ? percent * -1 : percent,
+                    R = f >> 16,
+                    G = (f >> 8) & 0x00ff,
+                    B = f & 0x0000ff;
+                return "#" + (
+                    0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 +
+                    (Math.round((t - G) * p) + G) * 0x100 +
+                    (Math.round((t - B) * p) + B)
+                ).toString(16).slice(1);
+            }
+
+           
+            function toggleMenu() {
+                navMenu.classList.toggle("show");
+            }
+
+           
+            function generateStars() {
+                for (let i = 0; i < 100; i++) {
+                    const star = document.createElement("div");
+                    star.classList.add("star");
+                    star.style.top = `${Math.random() * 100}vh`;
+                    star.style.left = `${Math.random() * 100}vw`;
+                    star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+                    starsContainer.appendChild(star);
+                }
+            }
+
+            /**
+             * Creates and appends editable flashcard elements to the container.
+             * @param {number} count - The number of flashcards to generate.
+             * @param {string} frontColor - The hex color for the front of the cards.
+             * @param {string} backColor - The hex color for the back of the cards.
+             */
+            function createFlashcardInputs(count, frontColor, backColor) {
+                flashcardEditorContainer.innerHTML = '';
+                if (count <= 0) {
+                    flashcardEditorContainer.innerHTML = '<p style="text-align: center; color: #a0aec0; margin-top: 20px;">Please enter a number greater than 0 to generate cards.</p>';
+                    return;
+                }
+
+                const fragment = document.createDocumentFragment(); 
+
+                for (let i = 0; i < count; i++) {
+                    const cardDiv = document.createElement("div");
+                    cardDiv.classList.add("flashcard-editor");
+                    
+                    cardDiv.style.setProperty('--front-card-color', frontColor);
+                    cardDiv.style.setProperty('--back-card-color', backColor);
+                    cardDiv.style.setProperty('--front-card-color-darker', darkenColor(frontColor, -0.2));
+                    cardDiv.style.setProperty('--back-card-color-darker', darkenColor(backColor, -0.2));
+
+                    cardDiv.innerHTML = `
+                        <div class="flashcard-editor-inner">
+                            <div class="front-editor">
+                                <label for="question-${i}">Question ${i + 1}:</label>
+                                <textarea id="question-${i}" placeholder="Enter question..."></textarea>
+                                <button class="flip-card-button">Flip</button>
+                            </div>
+                            <div class="back-editor">
+                                <label for="answer-${i}">Answer ${i + 1}:</label>
+                                <textarea id="answer-${i}" placeholder="Enter answer..."></textarea>
+                                <button class="flip-card-button">Flip</button>
+                            </div>
+                        </div>
+                    `;
+                    fragment.appendChild(cardDiv);
+
+                    const flipButtons = cardDiv.querySelectorAll(".flip-card-button");
+                    flipButtons.forEach(button => {
+                        button.addEventListener("click", (event) => {
+                            event.stopPropagation(); 
+                            cardDiv.querySelector(".flashcard-editor-inner").classList.toggle("flipped");
+                        });
+                    });
+                }
+                flashcardEditorContainer.appendChild(fragment); 
+            }
+
+            function handleGenerateCards() {
+                const topicName = topicNameInput.value.trim();
+                const numCards = parseInt(numCardsInput.value, 10);
+                const frontColor = frontColorInput.value;
+                const backColor = backColorInput.value;
+
+                if (!topicName) {
+                    alert("Please enter a Topic Name.");
+                    return;
+                }
+                if (!ALLOWED_TOPICS.includes(topicName.toLowerCase())) {
+                    alert(`"${topicName}" is not an existing topic. Please choose from: ${ALLOWED_TOPICS.map(t => t.charAt(0).toUpperCase() + t.slice(1)).join(', ')}.`);
+                    topicNameInput.value = "";
+                    return;
+                }
+
+                if (isNaN(numCards) || numCards <= 0) {
+            
+                    alert("Please enter a valid number of cards (at least 1).");
+                    return;
+                }
+
+                createFlashcardInputs(numCards, frontColor, backColor);
+              
+                if (numCards > 0) {
+                    saveFlashcardsBtn.style.display = 'block';
+                } else {
+                    saveFlashcardsBtn.style.display = 'none';
+                }
+               
+                showMessage(`Generated ${numCards} new flashcards for "${topicName}"., 'info'`);
+            }
+
+            
+            function handleSaveCards() {
+                const topicName = topicNameInput.value.trim();
+                if (!topicName) {
+                    alert("Topic Name cannot be empty when saving!");
+                    return;
+                }
+
+                if (!ALLOWED_TOPICS.includes(topicName.toLowerCase())) {
+                    alert(`"${topicName}" is not a valid topic to add cards to.`);
+                    return;
+                }
+
+                const flashcards = [];
+                const cardElements = flashcardEditorContainer.querySelectorAll(".flashcard-editor");
+
+                if (cardElements.length === 0) {
+                    alert("No flashcards to save. Generate cards first!");
+                    return;
+                }
+
+                cardElements.forEach((cardElement, index) => {
+                    const questionTextarea = cardElement.querySelector(`#question-${index}`);
+                    const answerTextarea = cardElement.querySelector(`#answer-${index}`);
+
+                    const question = questionTextarea ? questionTextarea.value.trim() : '';
+                    const answer = answerTextarea ? answerTextarea.value.trim() : '';
+
+                    if (question || answer) {
+                        flashcards.push({ question, answer });
+                    }
+                });
+
+                if (flashcards.length === 0) {
+                    alert("No content to save. Please fill in some questions/answers.");
+                    return;
+                }
+
+                const newTopicData = {
+                    topicName: topicName,
+                    cards: flashcards,
+                    frontColor: frontColorInput.value,
+                    backColor: backColorInput.value
+                };
+
+                try {
+                    let allTopics = JSON.parse(localStorage.getItem('flashmaster_custom_topics')) || [];
+                    const existingTopicIndex = allTopics.findIndex(t => t.topicName.toLowerCase() === topicName.toLowerCase());
+
+                    if (existingTopicIndex > -1) {
+                        allTopics[existingTopicIndex].cards.push(...newTopicData.cards);
+                        allTopics[existingTopicIndex].frontColor = newTopicData.frontColor;
+                        allTopics[existingTopicIndex].backColor = newTopicData.backColor;
+                  
+                        alert(`${newTopicData.cards.length} new cards added to topic "${topicName}" successfully!`);
+                    } else {
+                        allTopics.push(newTopicData);
+                       
+                        alert(`New topic "${topicName}" created with ${newTopicData.cards.length} cards!`);
+                    }
+
+                    localStorage.setItem('flashmaster_custom_topics', JSON.stringify(allTopics));
+                    console.log("Saved topics:", allTopics);
+
+                    flashcardEditorContainer.innerHTML = '';
+                    saveFlashcardsBtn.style.display = 'none';
+
+                } catch (e) {
+                    console.error("Error saving to local storage:", e);
+                    
+                    alert("Failed to save flashcards. Local storage might be full or unavailable.");
+                }
+            }
+-
+            generateCardsBtn.addEventListener("click", handleGenerateCards);
+            saveFlashcardsBtn.addEventListener("click", handleSaveCards);
+
+            window.toggleMenu = toggleMenu;
+
+            generateStars(); 
+            topicNameInput.value = "Data Structures"; 
+            handleGenerateCards(); 
+});
+    </script>
+</body>
+</html>
